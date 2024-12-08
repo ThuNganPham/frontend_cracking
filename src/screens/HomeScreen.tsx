@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import ImageWithText from '../components/ImageWithText';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
-import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen';  // Import SVG Component
-import ImageHomeScreen2 from  '../components/svg-JSX/firstHomescreen'; // Import SVG Component
+import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen'; 
+import ImageHomeScreen2 from  '../components/svg-JSX/firstHomescreen'; 
 
 export default function HomeScreen() {
   return (

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 // Định nghĩa kiểu cho `imageSource` là `React.ReactNode` (cho phép nhận một component SVG)
 interface ImageWithTextProps {
-  imageSource: React.ReactNode;  // Cập nhật kiểu để hỗ trợ các component React như SVG
+  imageSource: React.ReactNode;  // Cập nhật kiểu để hỗ trợ các component React như SVG/
   text: string;
 }
 

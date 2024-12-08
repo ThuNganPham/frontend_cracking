@@ -2,7 +2,7 @@ import * as React from "react"
 import Svg, { Path, Defs, Pattern, Use, Image, SvgProps } from "react-native-svg"
 const SvgComponent: React.FC<SvgProps> = (props) => (
   <Svg
-    // xmlns="http://www.w3.org/2000/svg"
+    /// xmlns="http://www.w3.org/2000/svg"
     // xmlnsXlink="http://www.w3.org/1999/xlink"
     width={347}
     height={222}
