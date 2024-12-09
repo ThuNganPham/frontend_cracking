@@ -9,14 +9,17 @@ import ImageHomeScreen2 from  '../components/svg-JSX/secondHomescreen';
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <ImageWithText
-        imageSource={<ImageHomeScreen1 />}
-        text={
-          <Text style={styles.italicText}>
-            Tạo nhân vật để chiến đấu cùng Shiso, bảo vệ những vùng da bị tổn thương bởi “vẩy nến” nhé các bạn!
-          </Text>
-        }
-      />
+      {/* Bọc ImageWithText đầu tiên trong View và thêm paddingTop */}
+      <View style={styles.firstImageWithTextContainer}>
+        <ImageWithText 
+          imageSource={<ImageHomeScreen1 />}
+          text={
+            <Text style={styles.italicText}>
+              Tạo nhân vật để chiến đấu cùng Shiso, bảo vệ những vùng da bị tổn thương bởi “vẩy nến” nhé các bạn!
+            </Text>
+          }
+        />
+      </View>
       <ImageWithText
         imageSource={<ImageHomeScreen2 />}
         text={
@@ -38,7 +41,7 @@ export default function HomeScreen() {
       />
       <LinkText
         text="Đăng nhập bằng Gmail"
-        style={styles.boldText} //
+        style={styles.boldText}
         onPress={() => console.log('Đăng nhập với Gmail')}
       />
     </View>
@@ -49,8 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EDF9ED',
-    padding: 20,
-    marginTop:30,
+    padding: 30,
   },
   italicText: {
     fontStyle: 'italic', 
@@ -63,11 +65,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-   blackBoldText: {
+  blackBoldText: {
     fontWeight: 'bold',
     color: 'black', 
   },
-    boldText: {
+  boldText: {
     fontWeight: 'bold', 
+  },
+  // Thêm style cho ImageWithText container để thêm paddingTop
+  firstImageWithTextContainer: {
+    paddingTop: 80,  // Thêm paddingTop cho ImageWithText đầu tiên
   },
 });
