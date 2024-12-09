@@ -17,10 +17,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, color = '#2
 
 const styles = StyleSheet.create({
   button: {
-    padding: 12,
-    borderRadius: 8,
+    padding: 17,
+    borderRadius: 100,
     alignItems: 'center',
     marginVertical: 10,
+    width:300,
+    alignSelf: 'center', 
+
   },
   text: {
     color: '#fff',

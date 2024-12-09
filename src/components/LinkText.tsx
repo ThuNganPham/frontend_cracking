@@ -1,14 +1,16 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, TextStyle, GestureResponderEvent } from 'react-native';
 
+// Thêm style vào type props
 interface LinkTextProps {
   text: string;
-  onPress: () => void;
+  onPress: (event: GestureResponderEvent) => void;
+  style?: TextStyle; // Prop style (tuỳ chọn)
 }
 
-const LinkText: React.FC<LinkTextProps> = ({ text, onPress }) => {
+const LinkText: React.FC<LinkTextProps> = ({ text, onPress, style }) => {
   return (
-    <Text style={styles.link} onPress={onPress}>
+    <Text style={[styles.link, style]} onPress={onPress}>
       {text}
     </Text>
   );
@@ -17,9 +19,10 @@ const LinkText: React.FC<LinkTextProps> = ({ text, onPress }) => {
 const styles = StyleSheet.create({
   link: {
     color: '#248A50',
-    textDecorationLine: 'underline',
+    textDecorationLine: 'none',
     textAlign: 'center',
     marginTop: 8,
+    fontSize:18,
   },
 });
 
