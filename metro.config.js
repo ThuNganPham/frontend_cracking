@@ -1,3 +1,7 @@
+// Trong React Native, "Metro" là tên gọi của công cụ bundler (trình đóng gói)
+//  được sử dụng để đóng gói mã nguồn JavaScript và tài nguyên tĩnh (như hình ảnh, font chữ...) 
+//  thành một gói duy nhất có thể chạy trên các thiết bị di động.
+
 const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);

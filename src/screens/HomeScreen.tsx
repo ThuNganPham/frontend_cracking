@@ -37,7 +37,7 @@ export default function HomeScreen() {
         }
       />
       <CustomButton
-        title="Tạo tài khoản Shiso"
+        title={t('createAccountButton')} 
         onPress={() => console.log('Tạo tài khoản!')}
       />
       <LinkText
