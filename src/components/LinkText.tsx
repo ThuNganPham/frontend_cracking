@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle, GestureResponderEvent } from 'react-native';
 
-// Thêm style vào type props
 interface LinkTextProps {
   text: string;
   onPress: (event: GestureResponderEvent) => void;
-  style?: TextStyle; // Prop style (tuỳ chọn)
+  style?: TextStyle; 
 }
 
 const LinkText: React.FC<LinkTextProps> = ({ text, onPress, style }) => {

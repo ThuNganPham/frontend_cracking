@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import ImageWithText from '../components/ImageWithText';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
 import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen'; 
-import ImageHomeScreen2 from  '../components/svg-JSX/secondHomescreen'; 
+import ImageHomeScreen2 from '../components/svg-JSX/secondHomescreen'; 
+
+const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
   return (
@@ -72,8 +74,7 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold', 
   },
-  // Thêm style cho ImageWithText container để thêm paddingTop
   firstImageWithTextContainer: {
-    paddingTop: 80,  // Thêm paddingTop cho ImageWithText đầu tiên
+    paddingTop: height * 0.05, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
   },
 });
