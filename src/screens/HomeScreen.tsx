@@ -1,29 +1,32 @@
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
 import ImageWithText from '../components/ImageWithText';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
-import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen'; 
-import ImageHomeScreen2 from '../components/svg-JSX/secondHomescreen'; 
-import { useTranslation } from 'react-i18next'; 
+import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen';
+import ImageHomeScreen2 from '../components/svg-JSX/secondHomescreen';
+import { NavigationProps } from '../navigation/navigation';
+import { useTranslation } from 'react-i18next';
+
 import '../../i18n';
 
-
-
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation();
-  const handleLanguageChange = (language:string) => {
-    i18n.changeLanguage(language); // Thay đổi ngôn ngữ
+  const navigation = useNavigation<NavigationProps>(); 
+
+  const handleLanguageChange = (language: string) => {
+    i18n.changeLanguage(language); 
   };
+
   return (
     <View style={styles.container}>
-      {/* Bọc ImageWithText đầu tiên trong View và thêm paddingTop */}
       <View style={styles.firstImageWithTextContainer}>
-        <ImageWithText 
+        <ImageWithText
           imageSource={<ImageHomeScreen1 />}
-          text={ <Text style={styles.italicText}>{t('homescreenLine1')}</Text>}
+          text={<Text style={styles.italicText}>{t('homescreenLine1')}</Text>}
         />
       </View>
       <ImageWithText
@@ -37,29 +40,23 @@ export default function HomeScreen() {
         }
       />
       <CustomButton
-        title={t('createAccountButton')} 
-        onPress={() => console.log('Tạo tài khoản!')}
+        title={t('createAccountButton')}
+        onPress={() => navigation.navigate('CreateAccount', {name: 'CreateAccount'})} 
       />
       <LinkText
         text={t('alreadyHaveAccount')}
-        style={styles.blackBoldText} 
-        onPress={() => console.log('Đi đến màn hình đăng nhập')}
+        style={styles.blackBoldText}
+        onPress={() => console.log('Đăng nhập với Gmail')} 
       />
       <LinkText
         text={t('loginWithGmail')}
         style={styles.boldText}
         onPress={() => console.log('Đăng nhập với Gmail')}
       />
-    <View style={styles.languageSwitchContainer}>
-          <LinkText
-            text="ENV"
-            onPress={() => handleLanguageChange('en')}
-          />
-          <Text style={styles.separator}> | </Text>
-          <LinkText
-            text="VI"
-            onPress={() => handleLanguageChange('vi')}
-          />
+      <View style={styles.languageSwitchContainer}>
+        <LinkText text="ENV" onPress={() => handleLanguageChange('en')} />
+        <Text style={styles.separator}> | </Text>
+        <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
       </View>
     </View>
   );
@@ -72,35 +69,34 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   italicText: {
-    fontStyle: 'italic', 
+    fontStyle: 'italic',
     fontSize: 16,
     color: '#333',
   },
   boldItalicText: {
-    fontStyle: 'italic', 
-    fontWeight: 'bold', 
+    fontStyle: 'italic',
+    fontWeight: 'bold',
     fontSize: 16,
     color: '#333',
   },
   blackBoldText: {
     fontWeight: 'bold',
-    color: 'black', 
+    color: 'black',
   },
   boldText: {
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
   },
   firstImageWithTextContainer: {
     paddingTop: height * 0.05, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
   },
   languageSwitchContainer: {
-    flexDirection: 'row', 
-    alignSelf: 'center', 
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
   separator: {
-    marginHorizontal: 5, // Khoảng cách giữa ENV và |
+    marginHorizontal: 5,
     fontSize: 16,
     color: '#248A50',
-    alignSelf: 'center', 
-
+    alignSelf: 'center',
   },
 });
