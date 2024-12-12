@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
+
 interface RectangleProps{
       imageSource: React.ReactNode;  
       placeholders : string[];
@@ -22,11 +23,14 @@ const Rectangle: React.FC<RectangleProps> =({imageSource, placeholders}) => {
           key={index}
           style={styles.input}
           placeholder={placeholder}
-          placeholderTextColor="#888" 
-         secureTextEntry={sensitiveKeywords.some((term) =>
+          placeholderTextColor="#248A50" 
+          secureTextEntry={sensitiveKeywords.some((term) =>
             placeholder.toLowerCase().includes(term)
           )}
-        />
+ autoComplete="off" 
+  autoCorrect={false} 
+
+          />
       ))}
     </View>
   )
@@ -34,10 +38,10 @@ const Rectangle: React.FC<RectangleProps> =({imageSource, placeholders}) => {
 
 const styles = StyleSheet.create({
   rectangle: {
-    width: '85%',
+    width: '90%',
     backgroundColor: '#248A50',
     borderRadius: 10,
-    padding: 20,
+    padding: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -53,13 +57,15 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   input: {
-    height: 47,
+    height: 49,
     borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 10,
     marginBottom: 25,
     backgroundColor: '#f7f7f7',
+    fontWeight: 'bold',
+
   },
   imageContainer: {
     marginBottom: 20, 
