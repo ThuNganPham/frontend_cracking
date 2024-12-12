@@ -1,44 +1,42 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image
-} from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
+import Title from '../components/Title';
+import Rectangle from '../components/Rectangle';
+import CustomButton from '../components/CustomButton';
+import LinkText from '../components/LinkText';
+import { NavigationProps } from '../navigation/navigation';
+import { useTranslation } from 'react-i18next';
+import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
+import '../../i18n';
 
-const RegisterScreen = () => {
+const { height } = Dimensions.get('window');
+
+export default function RegisterScreen() {
+  const { t, i18n } = useTranslation();
+  const navigation = useNavigation<NavigationProps>(); 
+
   return (
     <View style={styles.container}>
-      {/* Title */}
-      <Text style={styles.title}>Chào Mừng Bạn Đến Với Shiso </Text>
-
-      {/* Rectangle */}
-      <View style={styles.rectangle}>
-        {/* Image */}
-        <Image 
-          source={{ uri: 'https://via.placeholder.com/100' }} 
-          style={styles.image} 
-        />
-
-        {/* Input Fields */}
-        <TextInput placeholder="Username" style={styles.input} />
-        <TextInput placeholder="Email" style={styles.input} />
-        <TextInput placeholder="Password" style={styles.input} secureTextEntry={true} />
+      <View style={styles.firstImageWithTextContainer}>       
+        <Title text={t('RegisterScreenWelcome')} />
       </View>
-
-      {/* Register Button */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Đăng ký</Text>
-      </TouchableOpacity>
-
-      {/* Link */}
-      <TouchableOpacity>
-        <Text style={styles.link}>Trở lại đăng nhập</Text>
-      </TouchableOpacity>
+       <Rectangle
+        imageSource={<ShisoAuthenImage/>}
+        placeholders={[t('Username'), t('Password'), t('SecurityNumber')]} 
+      />
+      <CustomButton
+        title={t('SignUp')}
+        onPress={() => console.log('AAAAA')} 
+      />
+      <LinkText
+        text={t('BackToLogin')}
+        style={styles.blackBoldText}
+        onPress={() => console.log('AAAAA')} 
+      />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -48,57 +46,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  rectangle: {
-    width: '100%',
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5,
-    marginBottom: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
-    marginBottom: 20,
-    borderRadius: 50,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-    backgroundColor: '#f7f7f7',
-  },
-  button: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  link: {
-    color: '#007BFF',
-    fontSize: 14,
-    textDecorationLine: 'underline',
-  },
-});
+  firstImageWithTextContainer: {
+    padding : 10,
+    color: '#087738',
 
-export default RegisterScreen;
+  },
+    blackBoldText: {
+    fontWeight: 'bold',
+    color: 'black',
+  },
+
+});

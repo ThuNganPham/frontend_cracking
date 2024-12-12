@@ -1,27 +1,41 @@
 import React from 'react';
-import { View, TextInput, Image, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 
-const Rectangle = () => {
+interface RectangleProps{
+      imageSource: React.ReactNode;  
+      placeholders : string[];
+}
+
+// Đóng băng 😈😈😈
+const sensitiveKeywords = Object.freeze(['password', 'secret', 'mật', 'bí']);
+
+
+const Rectangle: React.FC<RectangleProps> =({imageSource, placeholders}) => {
   return (
-    <View style={styles.rectangle}>
-      {/* Image */}
-      <Image 
-        source={{ uri: 'https://via.placeholder.com/100' }} 
-        style={styles.image} 
-      />
+     <View style={styles.rectangle}>
+          <View style={styles.imageContainer}>
+                {imageSource}
+          </View>
 
-      {/* Input Fields */}
-      <TextInput placeholder="Username" style={styles.input} />
-      <TextInput placeholder="Email" style={styles.input} />
-      <TextInput placeholder="Password" style={styles.input} secureTextEntry={true} />
+      {placeholders.map((placeholder, index) => (
+        <TextInput
+          key={index}
+          style={styles.input}
+          placeholder={placeholder}
+          placeholderTextColor="#888" 
+         secureTextEntry={sensitiveKeywords.some((term) =>
+            placeholder.toLowerCase().includes(term)
+          )}
+        />
+      ))}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   rectangle: {
-    width: '100%',
-    backgroundColor: '#ffffff',
+    width: '85%',
+    backgroundColor: '#248A50',
     borderRadius: 10,
     padding: 20,
     shadowColor: '#000',
@@ -39,13 +53,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   input: {
-    height: 40,
+    height: 47,
     borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 15,
+    marginBottom: 25,
     backgroundColor: '#f7f7f7',
+  },
+  imageContainer: {
+    marginBottom: 20, 
+    alignSelf: 'center',
   },
 });
 

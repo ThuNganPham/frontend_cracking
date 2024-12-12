@@ -1,10 +1,16 @@
 {
-  "homescreenLine1": "Tạo nhân vật để chiến đấu cùng Shiso, bảo vệ những vùng da bị tổn thương bởi “vẩy nến” nhé các bạn!",
+  "homescreenLine1": "Tạo nhân vật để chiến đấu cùng ShiSo, bảo vệ những vùng da bị tổn thương bởi “vẩy nến” nhé các bạn!",
   "homescreenLine2": "Chúng ta sẽ cùng thực hiện",
   "homescreenLine3": "phương pháp tự nhiên ",
   "homescreenLine4": "và những “chiến lược” an toàn nhất",
   "alreadyHaveAccount": "Đã có tài khoản",
   "loginWithGmail": "Đăng nhập bằng Gmail",
-  "createAccountButton": "Tạo tài khoản Shiso"
+  "createAccountButton": "Tạo tài khoản ShiSo",
+  "RegisterScreenWelcome":"Chào Mừng Bạn Đến Với ShiSo",
+  "BackToLogin":"Trở lại đăng nhập",
+  "Username":"Tên tài khoản",
+  "Password":"Mật khẩu",
+  "SecurityNumber":"Số Bí Mật Để Khôi Phục Tài Khoản",
+  "SignUp": "Đăng Ký"
 
 }

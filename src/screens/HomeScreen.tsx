@@ -46,12 +46,12 @@ export default function HomeScreen() {
       <LinkText
         text={t('alreadyHaveAccount')}
         style={styles.blackBoldText}
-        onPress={() => console.log('Đăng nhập với Gmail')} 
+        onPress={() => console.log('AAAAAA')} 
       />
       <LinkText
         text={t('loginWithGmail')}
         style={styles.boldText}
-        onPress={() => console.log('Đăng nhập với Gmail')}
+        onPress={() => console.log('AAAAA')}
       />
       <View style={styles.languageSwitchContainer}>
         <LinkText text="ENV" onPress={() => handleLanguageChange('en')} />

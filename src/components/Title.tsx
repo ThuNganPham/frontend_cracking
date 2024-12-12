@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, TextStyle } from 'react-native';
 
 type TitleProps = {
   text: string;
+
 };
 
 const Title: React.FC<TitleProps> = ({ text }) => {
@@ -14,6 +15,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#087738',
+    
   },
 });
 
