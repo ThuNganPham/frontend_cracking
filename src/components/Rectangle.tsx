@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     backgroundColor: '#f7f7f7',
     fontWeight: 'bold',
+    overflow:"hidden",
 
   },
   imageContainer: {
