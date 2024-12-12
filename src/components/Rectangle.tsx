@@ -27,8 +27,9 @@ const Rectangle: React.FC<RectangleProps> =({imageSource, placeholders}) => {
           secureTextEntry={sensitiveKeywords.some((term) =>
             placeholder.toLowerCase().includes(term)
           )}
- autoComplete="off" 
-  autoCorrect={false} 
+          autoComplete="off" 
+          autoCorrect={false} 
+          textContentType="none" 
 
           />
       ))}
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginBottom: 20, 
-    alignSelf: 'center',
+    marginLeft:48,
   },
 });
 
