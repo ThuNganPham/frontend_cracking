@@ -11,6 +11,7 @@
   "Username":"Tên tài khoản",
   "Password":"Mật khẩu",
   "SecurityNumber":"Số Bí Mật Để Khôi Phục Tài Khoản",
-  "SignUp": "Đăng Ký"
-
+  "SignUp": "Đăng Ký",
+  "ForgotPassword": "Quên mật khẩu",
+  "LogIn": "Đăng nhập"
 }

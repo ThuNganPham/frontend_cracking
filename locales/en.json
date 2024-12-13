@@ -11,6 +11,8 @@
   "Username":"Username",
   "Password":"Password",
   "SecurityNumber":"Secret Number to Recover Account",
-  "SignUp": "Sign Up"
+  "SignUp": "Sign Up",
+  "ForgotPassword": "Forgot Password",
+  "LogIn": "Log In"
 
 }

@@ -1,41 +1,37 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-
-interface RectangleProps{
-      imageSource: React.ReactNode;  
-      placeholders : string[];
+interface RectangleProps {
+  imageSource: React.ReactNode;
+  placeholders: string[];
+  onChange: (fieldName: string, value: string) => void;
 }
 
 // Đóng băng 😈😈😈
 const sensitiveKeywords = Object.freeze(['password', 'secret', 'mật', 'bí']);
 
-
-const Rectangle: React.FC<RectangleProps> =({imageSource, placeholders}) => {
+const Rectangle: React.FC<RectangleProps> = ({ imageSource, placeholders, onChange }) => {
   return (
-     <View style={styles.rectangle}>
-          <View style={styles.imageContainer}>
-                {imageSource}
-          </View>
+    <View style={styles.rectangle}>
+      <View style={styles.imageContainer}>
+        {imageSource}
+      </View>
 
       {placeholders.map((placeholder, index) => (
         <TextInput
           key={index}
           style={styles.input}
           placeholder={placeholder}
-          placeholderTextColor="#248A50" 
+          placeholderTextColor="#248A50"
           secureTextEntry={sensitiveKeywords.some((term) =>
             placeholder.toLowerCase().includes(term)
           )}
-          autoComplete="off" 
-          autoCorrect={false} 
-          textContentType="none" 
-
-          />
+          onChangeText={(text) => onChange(placeholder, text)} 
+        />
       ))}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   rectangle: {
@@ -66,12 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     backgroundColor: '#f7f7f7',
     fontWeight: 'bold',
-    overflow:"hidden",
-
+    overflow: 'hidden',
   },
   imageContainer: {
-    marginBottom: 20, 
-    marginLeft:48,
+    marginBottom: 20,
+    marginLeft: 48,
   },
 });
 
