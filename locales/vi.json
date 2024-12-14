@@ -13,5 +13,8 @@
   "SecurityNumber":"Số Bí Mật Để Khôi Phục Tài Khoản",
   "SignUp": "Đăng Ký",
   "ForgotPassword": "Quên mật khẩu",
-  "LogIn": "Đăng nhập"
+  "LogIn": "Đăng nhập",
+  "Register": "Đăng ký thành công!",
+  "Success": "Thành công"
+
 }

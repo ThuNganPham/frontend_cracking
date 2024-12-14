@@ -13,6 +13,8 @@
   "SecurityNumber":"Secret Number to Recover Account",
   "SignUp": "Sign Up",
   "ForgotPassword": "Forgot Password",
-  "LogIn": "Log In"
+  "LogIn": "Log In",
+  "Register": "Sign up successfully! ",
+  "Success": "Success"
 
 }

@@ -36,14 +36,14 @@ const handleSignUp = async () => {
       securityAnswer: parseInt(formData.securityAnswer), // chuyển đổi sang số
     });
 
-    const elapsedTime = Date.now() - startTime; // Tính thời gian đã xử lý
-    console.log('Thời gian xử lý:', elapsedTime, 'ms'); // In thời gian xử lý ra console
+    const elapsedTime = Date.now() - startTime; // Tính thời gian đã xử lý BACKEND
+    console.log(elapsedTime, 'ms'); 
 
     // Hiển thị thông báo bằng Toast
     Toast.show({
       type: 'success',
-      text1: 'SignUpSuccess',
-      text2: response.data.message || 'Đăng ký thành công!',
+      text1: t('Success'),
+      text2: response.data.message || t('Register'),
     });
 
     // Điều hướng sau khi Toast
