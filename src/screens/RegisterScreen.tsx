@@ -8,7 +8,9 @@ import LinkText from '../components/LinkText';
 import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
 import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
-import axiosClient from '../api/axiosClient'; // Import axiosClient
+import axiosClient from '../api/axiosClient'; 
+import Toast from 'react-native-toast-message';
+
 import '../../i18n';
 
 const { height } = Dimensions.get('window');
@@ -24,23 +26,38 @@ export default function RegisterScreen() {
     securityAnswer: '',
   });
 
-  // Hàm xử lý khi người dùng nhấn nút Sign Up
-  const handleSignUp = async () => {
-    try {
-      // Gửi dữ liệu đăng ký lên server
-      const response = await axiosClient.post('users/register', {
-        username: formData.username,
-        password: formData.password,
-        securityAnswer: parseInt(formData.securityAnswer), // Đảm bảo securityAnswer là số
-      });
+const handleSignUp = async () => {
+  try {
+    const startTime = Date.now(); // Ghi nhận thời gian bắt đầu gửi request
 
-      Alert.alert(t('SignUpSuccess'), response.data.message || 'Đăng ký thành công!');
-      navigation.navigate('LogInAccount', {name: 'LogInAccount'}); 
-    } catch (error: any) {
-          
-      Alert.alert(t('SignUpFailed'), error.response?.data?.message || 'Đăng ký thất bại!');
-    }
-  };
+    const response = await axiosClient.post('users/register', {
+      username: formData.username,
+      password: formData.password,
+      securityAnswer: parseInt(formData.securityAnswer), // chuyển đổi sang số
+    });
+
+    const elapsedTime = Date.now() - startTime; // Tính thời gian đã xử lý
+    console.log('Thời gian xử lý:', elapsedTime, 'ms'); // In thời gian xử lý ra console
+
+    // Hiển thị thông báo bằng Toast
+    Toast.show({
+      type: 'success',
+      text1: 'SignUpSuccess',
+      text2: response.data.message || 'Đăng ký thành công!',
+    });
+
+    // Điều hướng sau khi Toast
+    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+  } 
+  
+    catch (error: unknown) {
+  if (error instanceof Error) {
+    console.error(error.message); // Lỗi có kiểu `Error`
+  } else {
+    console.error('Unknown error:', error); // Nếu không phải lỗi theo kiểu `Error`
+  }
+}
+};
 
 
   return (
@@ -69,6 +86,7 @@ export default function RegisterScreen() {
         style={styles.blackBoldText}
         onPress={() => navigation.navigate('LogInAccount', {name: 'LogInAccount'})} // Điều hướng về màn hình Login
       />
+
     </View>
   );
 }

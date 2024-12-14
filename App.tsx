@@ -3,7 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../MyApp/src/screens/HomeScreen';
 import RegisterScreen from '../MyApp/src/screens/RegisterScreen'; 
-import LogInScreen from '../MyApp/src/screens/LogInScreen'
+import LogInScreen from '../MyApp/src/screens/LogInScreen';
+import Toast from 'react-native-toast-message';
+
 
 const Stack = createStackNavigator();
 
@@ -15,6 +17,7 @@ const App = () => {
           <Stack.Screen name="CreateAccount" component={RegisterScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="LogInAccount" component={LogInScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 };

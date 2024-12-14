@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Lấy baseURL từ `expo.config.js`
 // const baseURLUsersRegister = Constants.expo?.extra?.baseURLUsersRegister;
 
-const baseURLUsersRegister= "https://4kdjjrg3-3001.asse.devtunnels.ms/api"
+const baseURLUsersRegister="http://192.168.0.206:3001/api";
 
 if (!baseURLUsersRegister) {
   throw new Error('BASE_URL_USERS_REGISTER not available in expo.config.js');
@@ -14,11 +14,13 @@ if (!baseURLUsersRegister) {
 // Tạo axios instance
 const axiosClient: AxiosInstance = axios.create({
   baseURL: baseURLUsersRegister,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+
 
 // Thêm token vào request nếu có
 axiosClient.interceptors.request.use(
@@ -35,11 +37,16 @@ axiosClient.interceptors.request.use(
 
 // Xử lý response hoặc lỗi
 axiosClient.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
+  (response: AxiosResponse) => {
+    // Trả về toàn bộ response
+    return response;
+  },
   (error) => {
-    alert(`Đã xảy ra lỗi: ${error.response?.data?.message || 'Không xác định'}`);
+    // Kiểm tra lỗi và alert thông báo
+    // alert(`Đã xảy ra lỗi: ${error.response?.data?.message || 'Không xác định'}`);
     return Promise.reject(error);
   }
 );
+
 
 export default axiosClient;
