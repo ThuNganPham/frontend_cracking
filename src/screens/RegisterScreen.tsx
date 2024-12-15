@@ -17,33 +17,32 @@ import { yupResolver } from '@hookform/resolvers/yup'; // Sử dụng yup với 
 import '../../i18n';
 
 const { height } = Dimensions.get('window');
-
-interface RectangleProps {
-  imageSource: React.ReactNode;
-}
-// Tạo schema validation với Yup
-const validationSchema = Yup.object().shape({
+function getValidationSchema(t: (key: string) => string) {
+  return Yup.object().shape({
     username: Yup.string()
-    .required('Username is required') 
-    .matches(
-      /^[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
-      'Username must be at least 5 characters and contain only letters, digits, and special characters'
-    ),
+      .required(t('MustFillUsername'))
+      .matches(
+        /^[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
+        t('UsernameRequire')
+      ),
+    password: Yup.string()
+      .required(t('MustFillPassword'))
+      .matches(
+        /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
+        t('PasswordRequired')
+      ),
+    securityAnswer: Yup.number()
+      .required(t('SecurityAnswerRequired'))
+      .typeError(t('SecurityAnswerMustBeNumber')),
+  });
+}
 
-  password: Yup.string()
-    .required('Password is required') 
-    .matches(
-      /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
-      'Password must be at least 5 characters, contain at least one special character, and no spaces'
-    ),
-  securityAnswer: Yup.number()
-    .required('Security Answer is required')
-    .typeError('Security Answer must be a number'),
-});
 
 export default function RegisterScreen() {
-  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProps>();
+  const { t } = useTranslation();
+  const validationSchema = getValidationSchema(t); // Tạo schema khi cần bằng cách truyền `t`.
+
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -51,7 +50,7 @@ export default function RegisterScreen() {
       password: '',
       securityAnswer: 0,
     },
-    resolver: yupResolver(validationSchema), // Kết nối validation schema với react-hook-form
+    resolver: yupResolver(validationSchema,{ abortEarly: false }), // Kết nối validation schema với react-hook-form
   });
 
   const onSubmit = async (data: any) => {
@@ -205,7 +204,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     overflow: 'hidden',
   },
-    inputInnerContainer: {
+  inputInnerContainer: {
     borderBottomWidth: 0, // Loại bỏ underline
   },
   inputText: {

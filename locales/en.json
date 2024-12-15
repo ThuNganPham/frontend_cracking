@@ -15,6 +15,15 @@
   "ForgotPassword": "Forgot Password",
   "LogIn": "Log In",
   "Register": "Sign up successfully! ",
-  "Success": "Success"
+  "Success": "Success",
+  "Uisrequired": "Username is require",
+  "Error": "Error",
+  "RegisterFailed": "Registration failed",
+  "UsernameRequire": "Username must be at least 5 characters, no spaces",
+  "PasswordRequired": "Password: 5+ chars, 1 special char, no spaces",
+  "MustFillUsername": "Username required",
+  "MustFillPassword": "Password required",
+  "SecurityAnswerRequired": "Security Number is required",
+  "SecurityAnswerMustBeNumber": "Secret number must be numberic"
 
 }

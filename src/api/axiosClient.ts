@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Lấy baseURL từ `expo.config.js`
 // const baseURLUsersRegister = Constants.expo?.extra?.baseURLUsersRegister;
 
-const baseURLUsersRegister="https://4kdjjrg3-3001.asse.devtunnels.ms/api";
+const baseURLUsersRegister="http://192.168.21.104:3001/api";
 
 if (!baseURLUsersRegister) {
   throw new Error('BASE_URL_USERS_REGISTER not available in expo.config.js');
@@ -14,7 +14,7 @@ if (!baseURLUsersRegister) {
 // Tạo axios instance
 const axiosClient: AxiosInstance = axios.create({
   baseURL: baseURLUsersRegister,
-  timeout: 30000,
+  timeout: 120000,
   headers: {
     'Content-Type': 'application/json',
   },

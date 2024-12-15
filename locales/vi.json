@@ -15,6 +15,13 @@
   "ForgotPassword": "Quên mật khẩu",
   "LogIn": "Đăng nhập",
   "Register": "Đăng ký thành công!",
-  "Success": "Thành công"
+  "Success": "Thành công",
+  "Error": "Lỗi",
+  "RegisterFailed": "Đăng ký thất bại",
+  "UsernameRequire": "Tên người dùng phải có ít nhất 5 ký tự, không có khoảng trắng",
+  "PasswordRequired": "Mật khẩu ít nhất 5 ký tự, 1 ký tự đặc biệt, không có khoảng trống",
+  "MustFillUsername": "Vui lòng nhập tài khoản",
+  "MustFillPassword": "Vui lòng nhập mật khẩu",
+  "SecurityAnswerRequired": "Vui lòng điền số khôi phục"
 
 }
