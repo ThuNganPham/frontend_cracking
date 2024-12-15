@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import React from 'react';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { Input } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import Title from '../components/Title';
 import Rectangle from '../components/Rectangle';
 import CustomButton from '../components/CustomButton';
@@ -8,85 +9,154 @@ import LinkText from '../components/LinkText';
 import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
 import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
-import axiosClient from '../api/axiosClient'; 
+import axiosClient from '../api/axiosClient';
 import Toast from 'react-native-toast-message';
-
+import { useForm, Controller } from 'react-hook-form';
+import * as Yup from 'yup'; // Thêm yup để tạo schema validation
+import { yupResolver } from '@hookform/resolvers/yup'; // Sử dụng yup với react-hook-form
 import '../../i18n';
 
 const { height } = Dimensions.get('window');
 
+interface RectangleProps {
+  imageSource: React.ReactNode;
+}
+// Tạo schema validation với Yup
+const validationSchema = Yup.object().shape({
+    username: Yup.string()
+    .required('Username is required') 
+    .matches(
+      /^[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
+      'Username must be at least 5 characters and contain only letters, digits, and special characters'
+    ),
+
+  password: Yup.string()
+    .required('Password is required') 
+    .matches(
+      /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
+      'Password must be at least 5 characters, contain at least one special character, and no spaces'
+    ),
+  securityAnswer: Yup.number()
+    .required('Security Answer is required')
+    .typeError('Security Answer must be a number'),
+});
+
 export default function RegisterScreen() {
   const { t } = useTranslation();
-  const navigation = useNavigation<NavigationProps>(); 
+  const navigation = useNavigation<NavigationProps>();
 
-  // State để quản lý dữ liệu người dùng nhập vào
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    securityAnswer: '',
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+      securityAnswer: 0,
+    },
+    resolver: yupResolver(validationSchema), // Kết nối validation schema với react-hook-form
   });
 
-const handleSignUp = async () => {
-  try {
-    const startTime = Date.now(); // Ghi nhận thời gian bắt đầu gửi request
+  const onSubmit = async (data: any) => {
+    try {
+      console.log('Register data:', data);
+      const startTime = Date.now();
 
-    const response = await axiosClient.post('users/register', {
-      username: formData.username,
-      password: formData.password,
-      securityAnswer: parseInt(formData.securityAnswer), // chuyển đổi sang số
-    });
+      const response = await axiosClient.post('users/register', {
+        username: data.username,
+        password: data.password,
+        securityAnswer: data.securityAnswer,
+      });
 
-    const elapsedTime = Date.now() - startTime; // Tính thời gian đã xử lý BACKEND
-    console.log(elapsedTime, 'ms'); 
+      const elapsedTime = Date.now() - startTime;
+      console.log(elapsedTime, 'ms');
 
-    // Hiển thị thông báo bằng Toast
-    Toast.show({
-      type: 'success',
-      text1: t('Success'),
-      text2: response.data.message || t('Register'),
-    });
+      Toast.show({
+        type: 'success',
+        text1: t('Success'),
+        text2: response.data.message || t('Register'),
+      });
 
-    // Điều hướng sau khi Toast
-    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
-  } 
-  
-    catch (error: unknown) {
-  if (error instanceof Error) {
-    console.error(error.message); // Lỗi có kiểu `Error`
-  } else {
-    console.error('Unknown error:', error); // Nếu không phải lỗi theo kiểu `Error`
-  }
-}
-};
-
+      navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+    } catch (error: any) {
+      console.error('Error during registration:', error.response?.data || error.message);
+      Toast.show({
+        type: 'error',
+        text1: t('Error'),
+        text2: error.response?.data?.message || t('RegisterFailed'),
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.firstImageWithTextContainer}>       
+      <View style={styles.firstImageWithTextContainer}>
         <Title text={t('RegisterScreenWelcome')} />
       </View>
-      <Rectangle
-        imageSource={<ShisoAuthenImage />}
-        placeholders={[t('Username'), t('Password'), t('SecurityNumber')]}
-        onChange={(fieldName: string, value: string) => {
-          const key = 
-            fieldName === t('Username') ? 'username' :
-            fieldName === t('Password') ? 'password' :
-            'securityAnswer'; // Đảm bảo đúng key trong state
-          setFormData((prev) => ({ ...prev, [key]: value }));
-        }}
-      />
+    <View style={styles.formContainer}>
+        <Rectangle imageSource={<ShisoAuthenImage />} />
+
+        <Controller
+          control={control}
+          name="username"
+          render={({ field }) => (
+            <Input
+              placeholder={t('Username')}
+              value={field.value}
+              onChangeText={field.onChange}
+              containerStyle={styles.inputContainer} 
+              inputContainerStyle={styles.inputInnerContainer} 
+              inputStyle={styles.inputText} 
+              placeholderTextColor="#248A50" 
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          render={({ field }) => (
+            <Input
+              placeholder={t('Password')}
+              value={field.value}
+              onChangeText={field.onChange}
+              secureTextEntry
+              containerStyle={styles.inputContainer}
+              inputContainerStyle={styles.inputInnerContainer} // Style cho container bên trong (loại bỏ underline)
+              inputStyle={styles.inputText} // Style chữ bên trong ô input
+              placeholderTextColor="#248A50" // Màu placeholder
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="securityAnswer"
+          render={({ field }) => (
+            <Input
+              placeholder={t('SecurityNumber')}
+              value={field.value ? String(field.value) : ''} // Hiển thị số, nếu không có giá trị thì hiển thị chuỗi rỗng
+              onChangeText={value => field.onChange(value ? parseFloat(value) : 0)} // Chuyển đổi giá trị nhập vào thành số
+              keyboardType="numeric"
+              containerStyle={styles.inputContainer}
+              inputContainerStyle={styles.inputInnerContainer} // Style cho container bên trong (loại bỏ underline)
+              inputStyle={styles.inputText} // Style chữ bên trong ô input
+              placeholderTextColor="#248A50" // Màu placeholder
+            />
+          )}
+        />
+      </View>
+
+            {/* Hiển thị lỗi validation nếu có */}
+      {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+      {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+      {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
 
       <CustomButton
         title={t('SignUp')}
-        onPress={handleSignUp} // Thay đổi onPress để gọi handleSignUp
+        onPress={handleSubmit(onSubmit)}
       />
+
       <LinkText
         text={t('BackToLogin')}
         style={styles.blackBoldText}
-        onPress={() => navigation.navigate('LogInAccount', {name: 'LogInAccount'})} // Điều hướng về màn hình Login
+        onPress={() => navigation.navigate('LogInAccount', { name: 'LogInAccount' })}
       />
-
     </View>
   );
 }
@@ -107,4 +177,41 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+  },
+  formContainer: {
+     width: '90%',
+    backgroundColor: '#248A50',
+    borderRadius: 10,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+    marginBottom: 20,
+  },
+  inputContainer: {
+    height: 47,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 25,
+    backgroundColor: '#f7f7f7',
+    fontWeight: 'bold',
+    overflow: 'hidden',
+  },
+    inputInnerContainer: {
+    borderBottomWidth: 0, // Loại bỏ underline
+  },
+  inputText: {
+    fontSize: 14, // Kích thước chữ nhỏ hơn
+    color: '#333', // Màu chữ (nếu muốn)
+  }
 });
+
+
