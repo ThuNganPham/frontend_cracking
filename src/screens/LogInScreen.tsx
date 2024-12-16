@@ -1,91 +1,89 @@
 import React from 'react';
-import { Text, View, StyleSheet, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Title from '../components/Title';
-// import Rectangle from '../components/Rectangle';
+import Rectangle from '../components/Image';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
-import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
 import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
-import axiosClient from '../api/axiosClient'; 
-
+import axiosClient from '../api/axiosClient';
+import Toast from 'react-native-toast-message';
+import { useForm } from 'react-hook-form';
+import { NavigationProps } from '../navigation/navigation';
+import { yupResolver } from '@hookform/resolvers/yup';
 import '../../i18n';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { getValidationSchema } from '../validation/validationSchema';
+import { RegisterInput } from '../components/Form';
 
 const { height } = Dimensions.get('window');
 
-
-import { useForm, Controller } from 'react-hook-form';
-import Toast from 'react-native-toast-message';
-
-export default function LoginScreen() {
-  const { t } = useTranslation();
+export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProps>();
+  const { t } = useTranslation();
+  const validationSchema = getValidationSchema(t);
 
-  // Sử dụng useForm từ react-hook-form để quản lý form
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       username: '',
       password: '',
-    }
+      securityAnswer: 0,
+    },
+    resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
 
   const onSubmit = async (data: any) => {
     try {
-      const startTime = Date.now(); // Ghi nhận thời gian bắt đầu gửi request
-
-      const response = await axiosClient.post('users/login', {
+      console.log('Register data:', data);
+      const response = await axiosClient.post('users/register', {
         username: data.username,
         password: data.password,
+        securityAnswer: data.securityAnswer,
       });
 
-      const elapsedTime = Date.now() - startTime; // Tính thời gian đã xử lý BACKEND
-      console.log(elapsedTime, 'ms'); 
-
-      // Hiển thị thông báo bằng Toast
       Toast.show({
         type: 'success',
         text1: t('Success'),
-        text2: response.data.message || t('LogIn'),
+        text2: response.data.message || t('Register'),
       });
 
-      // Điều hướng sau khi Toast
-      navigation.navigate('CreateAccount', { name: 'CreateAccount' }); // Hoặc bất kỳ màn hình nào bạn muốn chuyển đến sau khi đăng nhập thành công
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message); // Lỗi có kiểu `Error`
-      } else {
-        console.error('Unknown error:', error); // Nếu không phải lỗi theo kiểu `Error`
-      }
+      navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+    } catch (error: any) {
+      console.error('Error during registration:', error.response?.data || error.message);
+      Toast.show({
+        type: 'error',
+        text1: t('Error'),
+        text2: error.response?.data?.message || t('RegisterFailed'),
+      });
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.firstImageWithTextContainer}>       
-        <Title text={t('LogInScreenWelcome')} />
+      <View style={styles.firstImageWithTextContainer}>
+        <Title text={t('RegisterScreenWelcome')} />
       </View>
+      <KeyboardAvoidingView style={styles.formContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Rectangle imageSource={<ShisoAuthenImage />} />
+        <RegisterInput control={control} name="username" placeholder={t('Username')} />
+        <RegisterInput control={control} name="password" placeholder={t('Password')} secureTextEntry />
+      </KeyboardAvoidingView>
 
-      {/* <Rectangle
-        imageSource={<ShisoAuthenImage />}
-        placeholders={[t('Username'), t('Password')]}
-        control={control} // Truyền control từ react-hook-form vào Rectangle
-      /> */}
+      {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+      {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+      {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
 
-      <CustomButton
-        title={t('LogIn')}
-        onPress={handleSubmit(onSubmit)} // Thay đổi onPress để gọi handleSubmit
-      />
-
+      <CustomButton title={t('LogIn')} onPress={handleSubmit(onSubmit)} />
       <LinkText
         text={t('ForgotPassword')}
         style={styles.blackBoldText}
-        onPress={() => console.log('Forgot Password pressed')} // Bạn có thể thêm logic cho forgot password ở đây
+        onPress={() => navigation.navigate('LogInAccount', { name: 'LogInAccount' })}
       />
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -96,13 +94,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   firstImageWithTextContainer: {
-    padding : 10,
+    padding: 10,
     color: '#087738',
-
   },
-    blackBoldText: {
+  blackBoldText: {
     fontWeight: 'bold',
     color: 'black',
   },
-
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+  },
+  formContainer: {
+    width: '90%',
+    backgroundColor: '#248A50',
+    borderRadius: 10,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+    marginBottom: 20,
+  },
 });

@@ -1,48 +1,30 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import { Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../components/Title';
-import Rectangle from '../components/Rectangle';
+import Rectangle from '../components/Image';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
-import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
 import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
 import axiosClient from '../api/axiosClient';
 import Toast from 'react-native-toast-message';
-import { useForm, Controller } from 'react-hook-form';
-import * as Yup from 'yup'; // Thêm yup để tạo schema validation
-import { yupResolver } from '@hookform/resolvers/yup'; // Sử dụng yup với react-hook-form
+import { useForm } from 'react-hook-form';
+import { NavigationProps } from '../navigation/navigation';
+import { yupResolver } from '@hookform/resolvers/yup';
 import '../../i18n';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { getValidationSchema } from '../validation/validationSchema';
+import { RegisterInput } from '../components/Form';
+import { showToast } from '../utils/toastHelper'; 
+
 
 const { height } = Dimensions.get('window');
-function getValidationSchema(t: (key: string) => string) {
-  return Yup.object().shape({
-    username: Yup.string()
-      .required(t('MustFillUsername'))
-      .matches(
-        /^[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
-        t('UsernameRequire')
-      ),
-    password: Yup.string()
-      .required(t('MustFillPassword'))
-      .matches(
-        /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
-        t('PasswordRequired')
-      ),
-    securityAnswer: Yup.number()
-      .required(t('SecurityAnswerRequired'))
-      .typeError(t('SecurityAnswerMustBeNumber')),
-  });
-}
-
 
 export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProps>();
   const { t } = useTranslation();
-  const validationSchema = getValidationSchema(t); // Tạo schema khi cần bằng cách truyền `t`.
-
+  const validationSchema = getValidationSchema(t);
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -50,107 +32,50 @@ export default function RegisterScreen() {
       password: '',
       securityAnswer: 0,
     },
-    resolver: yupResolver(validationSchema,{ abortEarly: false }), // Kết nối validation schema với react-hook-form
+    resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
 
   const onSubmit = async (data: any) => {
-    try {
-      console.log('Register data:', data);
-      const startTime = Date.now();
+  try {
+    console.log('Register data:', data);
+    const response = await axiosClient.post('users/register', {
+      username: data.username,
+      password: data.password,
+      securityAnswer: data.securityAnswer,
+    });
 
-      const response = await axiosClient.post('users/register', {
-        username: data.username,
-        password: data.password,
-        securityAnswer: data.securityAnswer,
-      });
+    showToast('success', t('Success'), response.data.message || t('Register'));
 
-      const elapsedTime = Date.now() - startTime;
-      console.log(elapsedTime, 'ms');
-
-      Toast.show({
-        type: 'success',
-        text1: t('Success'),
-        text2: response.data.message || t('Register'),
-      });
-
-      navigation.navigate('LogInAccount', { name: 'LogInAccount' });
-    } catch (error: any) {
-      console.error('Error during registration:', error.response?.data || error.message);
-      Toast.show({
-        type: 'error',
-        text1: t('Error'),
-        text2: error.response?.data?.message || t('RegisterFailed'),
-      });
-    }
-  };
+    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+  } catch (error: any) {
+    console.error('Error during registration:', error.response?.data || error.message);
+    showToast('error', t('Error'), error.response?.data?.message || t('RegisterFailed'));
+  }
+};
 
   return (
     <View style={styles.container}>
       <View style={styles.firstImageWithTextContainer}>
         <Title text={t('RegisterScreenWelcome')} />
       </View>
-    <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Rectangle imageSource={<ShisoAuthenImage />} />
-
-        <Controller
-          control={control}
-          name="username"
-          render={({ field }) => (
-            <Input
-              placeholder={t('Username')}
-              value={field.value}
-              onChangeText={field.onChange}
-              containerStyle={styles.inputContainer} 
-              inputContainerStyle={styles.inputInnerContainer} 
-              inputStyle={styles.inputText} 
-              placeholderTextColor="#248A50" 
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => (
-            <Input
-              placeholder={t('Password')}
-              value={field.value}
-              onChangeText={field.onChange}
-              secureTextEntry
-              containerStyle={styles.inputContainer}
-              inputContainerStyle={styles.inputInnerContainer} // Style cho container bên trong (loại bỏ underline)
-              inputStyle={styles.inputText} // Style chữ bên trong ô input
-              placeholderTextColor="#248A50" // Màu placeholder
-            />
-          )}
-        />
-        <Controller
+        <RegisterInput control={control} name="username" placeholder={t('Username')} />
+        <RegisterInput control={control} name="password" placeholder={t('Password')} secureTextEntry />
+        <RegisterInput
           control={control}
           name="securityAnswer"
-          render={({ field }) => (
-            <Input
-              placeholder={t('SecurityNumber')}
-              value={field.value ? String(field.value) : ''} // Hiển thị số, nếu không có giá trị thì hiển thị chuỗi rỗng
-              onChangeText={value => field.onChange(value ? parseFloat(value) : 0)} // Chuyển đổi giá trị nhập vào thành số
-              keyboardType="numeric"
-              containerStyle={styles.inputContainer}
-              inputContainerStyle={styles.inputInnerContainer} // Style cho container bên trong (loại bỏ underline)
-              inputStyle={styles.inputText} // Style chữ bên trong ô input
-              placeholderTextColor="#248A50" // Màu placeholder
-            />
-          )}
+          placeholder={t('SecurityNumber')}
+          keyboardType="numeric"
         />
-      </View>
+      </KeyboardAvoidingView>
 
-            {/* Hiển thị lỗi validation nếu có */}
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
       {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
 
-      <CustomButton
-        title={t('SignUp')}
-        onPress={handleSubmit(onSubmit)}
-      />
-
+      <CustomButton title={t('SignUp')} onPress={handleSubmit(onSubmit)} />
       <LinkText
         text={t('BackToLogin')}
         style={styles.blackBoldText}
@@ -182,7 +107,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   formContainer: {
-     width: '90%',
+    width: '90%',
     backgroundColor: '#248A50',
     borderRadius: 10,
     padding: 25,
@@ -193,24 +118,4 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
   },
-  inputContainer: {
-    height: 47,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 25,
-    backgroundColor: '#f7f7f7',
-    fontWeight: 'bold',
-    overflow: 'hidden',
-  },
-  inputInnerContainer: {
-    borderBottomWidth: 0, // Loại bỏ underline
-  },
-  inputText: {
-    fontSize: 14, // Kích thước chữ nhỏ hơn
-    color: '#333', // Màu chữ (nếu muốn)
-  }
 });
-
-
