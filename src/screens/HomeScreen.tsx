@@ -72,10 +72,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf:'center',
-    backgroundColor: '#EDF9ED',
-    paddingHorizontal: width * 0.05,
-    paddingVertical: height * 0.03,
+    flex: 1,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   containerImgWtextFirst:{
     alignSelf: 'center',
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   firstImageWithTextContainer: {
-    paddingTop: height * 0.05, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
+    paddingTop: height * 0.02, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
 
   },
   languageSwitchContainer: {

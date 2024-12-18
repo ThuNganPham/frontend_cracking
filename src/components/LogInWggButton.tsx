@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, View, StyleSheet, Linking } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import * as Google from "expo-auth-session/providers/google";
 import { auth } from "../firebase/LoginWgg"; // Ensure you have configured Firebase in this file
@@ -31,27 +31,40 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onSuccess, onErro
     }
   }, [response]);
 
- 
-
   return (
     <View style={styles.container}>
-      <Button
-        title="Login with Google"
-        onPress={() => promptAsync()} // You can still use promptAsync if you want to use expo-auth-session
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          pressed && styles.buttonPressed, // Hiệu ứng nhấn
+        ]}
+        onPress={() => promptAsync()}
         disabled={!request}
-      />
-      {/* Optional: Manually trigger Linking for custom handling */}
-      {/* <Button
-        title="Open Google Login Link"
-        onPress={handleLinking}
-      /> */}
+      >
+        <Text style={styles.buttonText}>Log in with Google</Text>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    margin: 2,
+  },
+  button: {
+    backgroundColor: "transparent",
+    paddingVertical: 10,
+    borderRadius: 5,
+    width:"43%",
+    alignSelf: "center",
+  },
+  buttonPressed: {
+    backgroundColor: "transparent", // Màu nền khi nhấn nút
+  },
+  buttonText: {
+    color: "#248A50", 
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

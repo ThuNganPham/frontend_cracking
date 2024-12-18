@@ -109,5 +109,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
+    height : "46%"
   },
 });
