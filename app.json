@@ -27,6 +27,8 @@
     "plugins": [
       "expo-localization",
       "expo-font"
-    ]
+    ],
+    "scheme": "shiso",
+    "platforms": ["ios", "android"]
   }
 }

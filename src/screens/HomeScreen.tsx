@@ -1,17 +1,21 @@
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
-import ImageWithText from '../components/ImageWithText';
+import Rectangle from '../components/Image';
 import CustomButton from '../components/CustomButton';
 import LinkText from '../components/LinkText';
 import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen';
 import ImageHomeScreen2 from '../components/svg-JSX/secondHomescreen';
 import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
+import GoogleLoginButton from "../components/LogInWggButton";
+import VanillaText from '../components/VanillaText'
+import RectangleCenter from '../components/ImageCenter'
+
 
 import '../../i18n';
 
-const { height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation();
@@ -21,24 +25,29 @@ export default function HomeScreen() {
     i18n.changeLanguage(language); 
   };
 
+   const handleLoginSuccess = (user: any) => {
+    console.log("Logged in user successfully:", user);
+  };
+
+  const handleLoginError = (error: any) => {
+    console.error("Login failed:", error);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.firstImageWithTextContainer}>
-        <ImageWithText
-          imageSource={<ImageHomeScreen1 />}
-          text={<Text style={styles.italicText}>{t('homescreenLine1')}</Text>}
-        />
+          <RectangleCenter style={styles.containerImgWtextFirst} imageSource={<ImageHomeScreen1 />} />
+          <VanillaText>          
+               <Text style={styles.italicText}>{t('homescreenLine1')} </Text>
+          </VanillaText>
       </View>
-      <ImageWithText
-        imageSource={<ImageHomeScreen2 />}
-        text={
-          <Text style={styles.italicText}>
-            {t('homescreenLine2')}{' '}
-            <Text style={styles.boldItalicText}>{t('homescreenLine3')}</Text>
-            {t('homescreenLine4')}
-          </Text>
-        }
-      />
+      <RectangleCenter style={styles.containerImgWtextFirst} imageSource={<ImageHomeScreen2 />} />
+      <VanillaText>
+          <Text style={styles.italicText}>{t('homescreenLine2')} </Text>
+          <Text style={styles.boldItalicText}>{t('homescreenLine3')} </Text>
+          <Text style={styles.italicText}>{t('homescreenLine4')}</Text>
+      </VanillaText>
+
       <CustomButton
         title={t('createAccountButton')}
         onPress={() => navigation.navigate('CreateAccount', {name: 'CreateAccount'})} 
@@ -46,14 +55,13 @@ export default function HomeScreen() {
       <LinkText
         text={t('alreadyHaveAccount')}
         style={styles.blackBoldText}
-        onPress={() => console.log('AAAAAA')} 
+        onPress={() => navigation.navigate('LogInAccount', {name: 'LogInAccount'})} 
       />
-      <LinkText
-        text={t('loginWithGmail')}
-        style={styles.boldText}
-        onPress={() => console.log('AAAAA')}
-      />
-      <View style={styles.languageSwitchContainer}>
+        <GoogleLoginButton
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginError}
+            />
+        <View style={styles.languageSwitchContainer}>
         <LinkText text="ENV" onPress={() => handleLanguageChange('en')} />
         <Text style={styles.separator}> | </Text>
         <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
@@ -64,9 +72,15 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignSelf:'center',
     backgroundColor: '#EDF9ED',
-    padding: 30,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.03,
+  },
+  containerImgWtextFirst:{
+    alignSelf: 'center',
+
+
   },
   italicText: {
     fontStyle: 'italic',
@@ -88,6 +102,7 @@ const styles = StyleSheet.create({
   },
   firstImageWithTextContainer: {
     paddingTop: height * 0.05, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
+
   },
   languageSwitchContainer: {
     flexDirection: 'row',

@@ -1,12 +1,12 @@
 {
   "homescreenLine1": "Tạo nhân vật để chiến đấu cùng ShiSo, bảo vệ những vùng da bị tổn thương bởi “vẩy nến” nhé các bạn!",
-  "homescreenLine2": "Chúng ta sẽ cùng thực hiện",
+  "homescreenLine2": "Chúng ta sẽ cùng thực hiện ",
   "homescreenLine3": "phương pháp tự nhiên ",
   "homescreenLine4": "và những “chiến lược” an toàn nhất",
   "alreadyHaveAccount": "Đã có tài khoản",
   "loginWithGmail": "Đăng nhập bằng Gmail",
   "createAccountButton": "Tạo tài khoản ShiSo",
-  "RegisterScreenWelcome":"Chào Mừng Bạn Đến Với ShiSo",
+  "ScreenWelcome":"Chào Mừng Bạn Đến Với ShiSo",
   "BackToLogin":"Trở lại đăng nhập",
   "Username":"Tên tài khoản",
   "Password":"Mật khẩu",
@@ -22,6 +22,13 @@
   "PasswordRequired": "Mật khẩu ít nhất 5 ký tự, 1 ký tự đặc biệt, không có khoảng trống",
   "MustFillUsername": "Vui lòng nhập tài khoản",
   "MustFillPassword": "Vui lòng nhập mật khẩu",
-  "SecurityAnswerRequired": "Vui lòng điền số khôi phục"
+  "SecurityAnswerRequired": "Vui lòng điền số khôi phục",
+  "LoginSuccess": "Đăng nhập thành công!",
+  "LogInFailed": "Đăng nhập thất bại",
+  "NewPassWord": "Mật khẩu mới",
+  "ResetPassword": "Đặt lại mậu khẩu",
+  "BackToHomeScreen": "Quay lại trang chủ"
+
+
 
 }

@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, StyleSheet,ViewStyle } from 'react-native';
+import { View, StyleSheet,ViewStyle , Dimensions} from 'react-native';
 
 interface RectangleProps {
   imageSource: React.ReactNode; 
   style?:ViewStyle;
 }
 
-const Rectangle: React.FC<RectangleProps> = ({ imageSource }) => {
+const { height } = Dimensions.get('window');
+
+const RectangleCenter: React.FC<RectangleProps> = ({ imageSource }) => {
   return (
     <View style={styles.rectangleContainer}>
       {imageSource}
@@ -16,11 +18,9 @@ const Rectangle: React.FC<RectangleProps> = ({ imageSource }) => {
 
 const styles = StyleSheet.create({
   rectangleContainer: {
-    width: 100,
-    height: 100,
-    marginBottom: 40,
-    marginLeft: 49,
+    marginTop:height * 0.02,
+    alignSelf:'center'
   },
 });
 
-export default Rectangle;
+export default RectangleCenter;

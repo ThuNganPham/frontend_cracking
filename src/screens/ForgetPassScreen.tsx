@@ -17,7 +17,6 @@ import { getValidationSchema } from '../validation/validationSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
 
-
 const { height } = Dimensions.get('window');
 
 export default function RegisterScreen() {
@@ -36,19 +35,19 @@ export default function RegisterScreen() {
 
   const onSubmit = async (data: any) => {
   try {
-    console.log('Register data:', data);
-    const response = await axiosClient.post('users/register', {
+    console.log('Login data:', data);
+    const response = await axiosClient.post('users/login', {
       username: data.username,
       password: data.password,
       securityAnswer: data.securityAnswer,
     });
 
-    showToast('success', t('Success'), response.data.message || t('Register'));
+    showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
 
     navigation.navigate('LogInAccount', { name: 'LogInAccount' });
   } catch (error: any) {
     console.error('Error during registration:', error.response?.data || error.message);
-    showToast('error', t('Error'), error.response?.data?.message || t('RegisterFailed'));
+    showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
   }
 };
 
@@ -61,7 +60,7 @@ export default function RegisterScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Rectangle imageSource={<ShisoAuthenImage />} />
         <RegisterInput control={control} name="username" placeholder={t('Username')} />
-        <RegisterInput control={control} name="password" placeholder={t('Password')} secureTextEntry />
+        <RegisterInput control={control} name="password" placeholder={t('NewPassWord')} secureTextEntry />
         <RegisterInput
           control={control}
           name="securityAnswer"
@@ -74,11 +73,11 @@ export default function RegisterScreen() {
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
       {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
 
-      <CustomButton title={t('SignUp')} onPress={handleSubmit(onSubmit)} />
+      <CustomButton title={t('ResetPassword')} onPress={handleSubmit(onSubmit)} />
       <LinkText
-        text={t('BackToHomeScreen')}
+        text={t('BackToLogin')}
         style={styles.blackBoldText}
-        onPress={() => navigation.navigate('Home', { name: 'Home' })}
+        onPress={() => navigation.navigate('LogInAccount', { name: 'LogInAccount' })}
       />
     </View>
   );

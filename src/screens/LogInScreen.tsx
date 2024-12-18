@@ -8,7 +8,6 @@ import LinkText from '../components/LinkText';
 import { useTranslation } from 'react-i18next';
 import ShisoAuthenImage from '../components/svg-JSX/shisoAuthen';
 import axiosClient from '../api/axiosClient';
-import Toast from 'react-native-toast-message';
 import { useForm } from 'react-hook-form';
 import { NavigationProps } from '../navigation/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,6 +15,7 @@ import '../../i18n';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { getValidationSchema } from '../validation/validationSchema';
 import { RegisterInput } from '../components/Form';
+import { showToast } from '../utils/toastHelper'; 
 
 const { height } = Dimensions.get('window');
 
@@ -34,35 +34,27 @@ export default function RegisterScreen() {
   });
 
   const onSubmit = async (data: any) => {
-    try {
-      console.log('Register data:', data);
-      const response = await axiosClient.post('users/register', {
-        username: data.username,
-        password: data.password,
-        securityAnswer: data.securityAnswer,
-      });
+  try {
+    console.log('Login data:', data);
+    const response = await axiosClient.post('users/login', {
+      username: data.username,
+      password: data.password,
+      securityAnswer: data.securityAnswer,
+    });
 
-      Toast.show({
-        type: 'success',
-        text1: t('Success'),
-        text2: response.data.message || t('Register'),
-      });
+    showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
 
-      navigation.navigate('LogInAccount', { name: 'LogInAccount' });
-    } catch (error: any) {
-      console.error('Error during registration:', error.response?.data || error.message);
-      Toast.show({
-        type: 'error',
-        text1: t('Error'),
-        text2: error.response?.data?.message || t('RegisterFailed'),
-      });
-    }
-  };
+    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+  } catch (error: any) {
+    console.error('Error during registration:', error.response?.data || error.message);
+    showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
+  }
+};
 
   return (
     <View style={styles.container}>
       <View style={styles.firstImageWithTextContainer}>
-        <Title text={t('RegisterScreenWelcome')} />
+        <Title text={t('ScreenWelcome')} />
       </View>
       <KeyboardAvoidingView style={styles.formContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -79,7 +71,7 @@ export default function RegisterScreen() {
       <LinkText
         text={t('ForgotPassword')}
         style={styles.blackBoldText}
-        onPress={() => navigation.navigate('LogInAccount', { name: 'LogInAccount' })}
+        onPress={() => navigation.navigate('ForgetPasswordScreen', { name: 'ForgetPasswordScreen' })}
       />
     </View>
   );

@@ -17,11 +17,13 @@
     "axios": "^1.7.9",
     "expo": "~52.0.17",
     "expo-app-loading": "^2.1.1",
+    "expo-auth-session": "~6.0.1",
     "expo-constants": "~17.0.3",
     "expo-font": "~13.0.1",
     "expo-localization": "~16.0.0",
     "expo-splash-screen": "~0.29.18",
     "expo-status-bar": "~2.0.0",
+    "firebase": "^11.1.0",
     "i18next": "^24.0.5",
     "react": "18.3.1",
     "react-hook-form": "^7.54.1",
@@ -37,6 +39,7 @@
     "react-native-svg-transformer": "^1.5.0",
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
+    "undefined": "expo-auth-session/providers/google",
     "yup": "^1.5.0"
   },
   "devDependencies": {
