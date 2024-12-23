@@ -4,7 +4,7 @@
   "homescreenLine3": "natural methods",
   "homescreenLine4": "and the safest 'strategies' together",
   "alreadyHaveAccount": "Already have an account",
-  "loginWithGmail": "Login with Gmail",
+  "loginWithGmail": "Login with Google",
   "createAccountButton": "Create a ShiSo Account",
   "ScreenWelcome":"Welcome to ShiSo",
   "BackToLogin":"Back To Login",
@@ -29,6 +29,7 @@
   "LogInFailed": "Log in failed",
   "NewPassWord": "New Password",
   "ResetPassword": "Reset Password",
-  "BackToHomeScreen":"Back to home screen"
-
+  "BackToHomeScreen":"Back to home screen",
+  "VerificationCode":"Verification Code",
+  "VerificationDescription":"Enter the code sent to your device address"
 }

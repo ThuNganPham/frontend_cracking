@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyApp",
-    "slug": "MyApp",
+    "name": "ShiSo",
+    "slug": "ShiSo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,14 +13,30 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.example.ShiSo",
+      "supportsTablet": true,
+      "associatedDomains": ["applinks:ShiSo.app"] 
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
+  "package": "com.example.ShiSo",
+  "intentFilters": [
+    {
+      "action": "VIEW",
+      "data": [
+        {
+          "scheme": "https",
+          "host": "ShiSo.app",
+          "pathPrefix": "/"
+        },
+        {
+          "scheme": "com.googleusercontent.apps.399164063066-qr9i2slnuaqd8h8cq53m2nu7droii99i",
+          "host": "oauth2redirect"
+        }
+      ],
+      "category": ["BROWSABLE", "DEFAULT"]
+    }
+  ]
+},
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -28,7 +44,18 @@
       "expo-localization",
       "expo-font"
     ],
-    "scheme": "shiso",
-    "platforms": ["ios", "android"]
+    "scheme": "com.googleusercontent.apps.399164063066-qr9i2slnuaqd8h8cq53m2nu7droii99i",
+    "extra": {
+      "ngrokUrl": "https://3139-203-205-26-165.ngrok-free.app",
+      "eas": {
+        "projectId": "010b3872-82a8-4c77-bee1-079ff465fd62"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/010b3872-82a8-4c77-bee1-079ff465fd62"
+    }
   }
 }

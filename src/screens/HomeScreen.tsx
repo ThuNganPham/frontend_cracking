@@ -8,7 +8,7 @@ import ImageHomeScreen1 from '../components/svg-JSX/firstHomescreen';
 import ImageHomeScreen2 from '../components/svg-JSX/secondHomescreen';
 import { NavigationProps } from '../navigation/navigation';
 import { useTranslation } from 'react-i18next';
-import GoogleLoginButton from "../components/LogInWggButton";
+import GoogleLoginButton from "../firebase/LogInWggButton";
 import VanillaText from '../components/VanillaText'
 import RectangleCenter from '../components/ImageCenter'
 
@@ -62,10 +62,10 @@ export default function HomeScreen() {
               onError={handleLoginError}
             />
         <View style={styles.languageSwitchContainer}>
-        <LinkText text="ENV" onPress={() => handleLanguageChange('en')} />
-        <Text style={styles.separator}> | </Text>
-        <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
-      </View>
+            <LinkText text="EN" onPress={() => handleLanguageChange('en')} />
+            <Text style={styles.separator}> | </Text>
+            <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
+        </View>
     </View>
   );
 }
@@ -102,15 +102,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   firstImageWithTextContainer: {
-    paddingTop: height * 0.02, // Tự động thêm paddingTop theo chiều cao màn hình (5%)
-
+    paddingTop: height * 0.01, 
   },
   languageSwitchContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
   },
   separator: {
-    marginHorizontal: 5,
+    marginHorizontal: 2,
+    marginTop:4,
     fontSize: 16,
     color: '#248A50',
     alignSelf: 'center',

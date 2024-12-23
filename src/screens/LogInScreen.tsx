@@ -13,11 +13,16 @@ import { NavigationProps } from '../navigation/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import '../../i18n';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { getValidationSchema } from '../validation/validationSchema';
+import { getValidationSchema } from '../validation/LogInSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
 
 const { height } = Dimensions.get('window');
+
+interface LoginData {
+  username: string;
+  password: string;
+}
 
 export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProps>();
@@ -28,18 +33,16 @@ export default function RegisterScreen() {
     defaultValues: {
       username: '',
       password: '',
-      securityAnswer: 0,
     },
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginData) => {
   try {
     console.log('Login data:', data);
     const response = await axiosClient.post('users/login', {
       username: data.username,
       password: data.password,
-      securityAnswer: data.securityAnswer,
     });
 
     showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
@@ -65,13 +68,17 @@ export default function RegisterScreen() {
 
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
 
       <CustomButton title={t('LogIn')} onPress={handleSubmit(onSubmit)} />
       <LinkText
         text={t('ForgotPassword')}
         style={styles.blackBoldText}
         onPress={() => navigation.navigate('ForgetPasswordScreen', { name: 'ForgetPasswordScreen' })}
+      />
+      <LinkText
+        text="test screen OTP cái"
+        style={styles.blackBoldText}
+        onPress={() => navigation.navigate('OTPscreen', { name: 'OTPscreen' })}
       />
     </View>
   );
@@ -109,6 +116,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
-    height : "46%"
+    height : "37%"
   },
 });

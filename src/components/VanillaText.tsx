@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextStyle } from 'react-native';
 
-// Định nghĩa kiểu cho `imageSource` là `React.ReactNode` (cho phép nhận một component SVG)
 
 interface VanillaTextProps {
-  children: React.ReactNode; // Cho phép nhận các React elements lồng bên trong
-  style?: TextStyle; // Cho phép style tùy chỉnh (tùy chọn)
+  children: React.ReactNode; 
+  style?: TextStyle; 
 }
 
 const VanillaText: React.FC<VanillaTextProps> = ({ children, style }) => {

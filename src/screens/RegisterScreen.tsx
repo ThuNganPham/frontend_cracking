@@ -13,12 +13,18 @@ import { NavigationProps } from '../navigation/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import '../../i18n';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { getValidationSchema } from '../validation/validationSchema';
+import { getValidationSchema } from '../validation/RegistrationSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
 
 
 const { height } = Dimensions.get('window');
+
+interface RegisterData {
+  username: string;
+  password: string;
+  securityAnswer: number; 
+}
 
 export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProps>();
@@ -34,7 +40,7 @@ export default function RegisterScreen() {
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: RegisterData) => {
   try {
     console.log('Register data:', data);
     const response = await axiosClient.post('users/register', {

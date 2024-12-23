@@ -27,7 +27,10 @@
   "LogInFailed": "Đăng nhập thất bại",
   "NewPassWord": "Mật khẩu mới",
   "ResetPassword": "Đặt lại mậu khẩu",
-  "BackToHomeScreen": "Quay lại trang chủ"
+  "BackToHomeScreen": "Quay lại trang chủ",
+  "VerificationCode": "Mã xác minh",
+  "VerificationDescription":"Nhập mã số được gửi tới địa chỉ thiết bị của bạn"
+
 
 
 
