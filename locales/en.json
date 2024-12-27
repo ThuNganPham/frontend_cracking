@@ -31,5 +31,9 @@
   "ResetPassword": "Reset Password",
   "BackToHomeScreen":"Back to home screen",
   "VerificationCode":"Verification Code",
-  "VerificationDescription":"Enter the code sent to your device address"
+  "VerificationDescription":"Enter the code sent to your device address",
+  "ReceiveCode": "Didn't receive the code? ",
+  "Resend": "Resend",
+  "Goback": "Go back",
+  "Verify": "Verify"
 }

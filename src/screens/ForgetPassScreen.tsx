@@ -25,7 +25,7 @@ interface ResetData {
   securityAnswer: number; 
 }
 
-export default function RegisterScreen() {
+export default function ForgetPasswordScreen() {
   const navigation = useNavigation<NavigationProps>();
   const { t } = useTranslation();
   const validationSchema = getValidationSchema(t);
@@ -50,7 +50,7 @@ export default function RegisterScreen() {
 
     showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
 
-    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+    navigation.navigate('OTPscreen', { name: 'OTPscreen' });
   } catch (error: any) {
     console.error('Error during registration:', error.response?.data || error.message);
     showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));

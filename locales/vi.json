@@ -29,7 +29,15 @@
   "ResetPassword": "Đặt lại mậu khẩu",
   "BackToHomeScreen": "Quay lại trang chủ",
   "VerificationCode": "Mã xác minh",
-  "VerificationDescription":"Nhập mã số được gửi tới địa chỉ thiết bị của bạn"
+  "VerificationDescription":"Nhập mã số được gửi tới địa chỉ thiết bị của bạn",
+  "ReceiveCode": "Bạn chưa nhận được mã? ",
+  "Resend": "Gửi lại",
+  "Goback": "Quay lại",
+  "Verify": "Xác minh"
+
+
+
+
 
 
 

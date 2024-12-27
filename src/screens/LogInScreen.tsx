@@ -16,6 +16,8 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 import { getValidationSchema } from '../validation/LogInSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const { height } = Dimensions.get('window');
 
@@ -24,7 +26,7 @@ interface LoginData {
   password: string;
 }
 
-export default function RegisterScreen() {
+export default function LogInScreen() {
   const navigation = useNavigation<NavigationProps>();
   const { t } = useTranslation();
   const validationSchema = getValidationSchema(t);
@@ -43,11 +45,15 @@ export default function RegisterScreen() {
     const response = await axiosClient.post('users/login', {
       username: data.username,
       password: data.password,
-    });
+    },{ withCredentials: true });
+
+    // Lưu access token vào AsyncStorage
+    const accessToken = response.data.access_token;
+    await AsyncStorage.setItem('accessToken', accessToken);
 
     showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
-
-    navigation.navigate('LogInAccount', { name: 'LogInAccount' });
+    console.log(accessToken);
+    navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
   } catch (error: any) {
     console.error('Error during registration:', error.response?.data || error.message);
     showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));

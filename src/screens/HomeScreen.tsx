@@ -27,6 +27,8 @@ export default function HomeScreen() {
 
    const handleLoginSuccess = (user: any) => {
     console.log("Logged in user successfully:", user);
+    navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
+
   };
 
   const handleLoginError = (error: any) => {
