@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Lấy baseURL từ `expo.config.js`
 // const baseURLUsersRegister = Constants.expo?.extra?.baseURLUsersRegister;
 
-const baseURLUsersRegister = "http://192.168.88.126:3001/api";
+const baseURLUsersRegister = "http://192.168.1.4:3001/api";
 
 // if (!baseURLUsersRegister) {
 //   throw new Error('BASE_URL_USERS_REGISTER not available in expo.config.js');
