@@ -8,9 +8,19 @@ import ForgetPasswordScreen from '../MyApp/src/screens/ForgetPassScreen';
 import Toast from 'react-native-toast-message';
 import OTPscreen from '../MyApp/src/screens/OTPscreen'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SucessTestScreen from '../MyApp/src/screens/SuccessTest'
+import SucessTestScreen from '../MyApp/src/screens/SuccessTest';
+import jwt_decode from 'jwt-decode';
+
 
 const Stack = createStackNavigator();
+
+interface DecodedToken {
+  exp: number;
+  [key: string]: any;
+}
+declare module 'jwt-decode' {
+  export default function jwt_decode<T>(token: string | null): T;
+}
 
 const linking = {
   prefixes: ['https://ShiSo.app', 'com.googleusercontent.apps.399164063066-qr9i2slnuaqd8h8cq53m2nu7droii99i:/'], // Add your app's custom scheme and web URL
@@ -31,10 +41,16 @@ const App = () => {
       try {
           const token = await AsyncStorage.getItem('access_token');
           if(token){
-            setIsLoggedIn(true);
-          } else {
+          const decodedToken: DecodedToken = jwt_decode(token);  
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp < currentTime) {
             setIsLoggedIn(false);
+          } else {
+            setIsLoggedIn(true);
           }
+        } else {
+              setIsLoggedIn(false);
+        }
       } catch (error){
           console.log('Lỗi gì mà checkToken không đc đây:', error)
           setIsLoggedIn(false);
