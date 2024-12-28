@@ -46,6 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUsername(decodedToken.username);
 
         setIsLoggedIn(decodedToken.exp > currentTime);
+        const savedUsername = await AsyncStorage.getItem('@username');
+        if (savedUsername) {
+          setUsername(savedUsername); // Cập nhật context với username đã lưu
+        }
       } catch (error) {
         console.error('Error in checkToken:', error);
         setIsLoggedIn(false);

@@ -23,7 +23,7 @@ const { height } = Dimensions.get('window');
 interface RegisterData {
   username: string;
   password: string;
-  securityAnswer: number; 
+  phoneNumber: string; 
 }
 
 export default function RegisterScreen() {
@@ -35,7 +35,7 @@ export default function RegisterScreen() {
     defaultValues: {
       username: '',
       password: '',
-      securityAnswer: 0,
+      phoneNumber: '',
     },
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
@@ -46,8 +46,9 @@ export default function RegisterScreen() {
     const response = await axiosClient.post('users/register', {
       username: data.username,
       password: data.password,
-      securityAnswer: data.securityAnswer,
+      securityAnswer: data.phoneNumber,
     });
+
 
     showToast('success', t('Success'), response.data.message || t('Register'));
 
@@ -78,7 +79,7 @@ export default function RegisterScreen() {
 
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
+      {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
 
       <CustomButton title={t('SignUp')} onPress={handleSubmit(onSubmit)} />
       <LinkText

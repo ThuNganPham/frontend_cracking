@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
 import { Controller } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 interface InputProps {
   control: any;
@@ -20,22 +20,33 @@ export const RegisterInput = ({
   keyboardType = 'default',
   placeholderTextColor = '#248A50',
 }: InputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <Controller
       control={control}
       name={name}
       render={({ field }) => (
-        <Input
-          placeholder={placeholder}
-          value={field.value}
-          onChangeText={field.onChange}
-          secureTextEntry={secureTextEntry}
-          keyboardType={keyboardType}
-          containerStyle={styles.inputContainer}
-          inputContainerStyle={styles.inputInnerContainer}
-          inputStyle={styles.inputText}
-          placeholderTextColor={placeholderTextColor}
-        />
+        <View style={styles.inputContainer}>
+            {
+              isFocused || field.value
+                ? <Text style={styles.label}>{placeholder}</Text>
+                : null
+            }
+          <Input
+            placeholder={!isFocused ? placeholder : ''}
+            value={field.value}
+            onChangeText={field.onChange}
+            secureTextEntry={secureTextEntry}
+            keyboardType={keyboardType}
+            containerStyle={styles.inputWrapper}
+            inputContainerStyle={styles.inputInnerContainer}
+            inputStyle={styles.inputText}
+            placeholderTextColor={placeholderTextColor}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
+        </View>
       )}
     />
   );
@@ -43,21 +54,35 @@ export const RegisterInput = ({
 
 const styles = StyleSheet.create({
   inputContainer: {
+    marginBottom: 25,
+    position: 'relative',
+  },
+  inputWrapper: {
     height: 47,
     borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 25,
     backgroundColor: '#f7f7f7',
-    fontWeight: 'bold',
     overflow: 'hidden',
   },
   inputInnerContainer: {
-    borderBottomWidth: 0, 
+    borderBottomWidth: 0,
   },
   inputText: {
     fontSize: 14,
     color: '#333',
+  },
+  label: {
+    position: 'absolute',
+    top: -8,
+    left: 10,
+    fontSize: 12,
+    color: '#248A50',
+    backgroundColor: '#f7f7f7',
+    paddingHorizontal: 5,
+    zIndex: 1,
+    borderRadius:10,
+    borderColor: '#339933',
+    borderWidth: 3,
   },
 });

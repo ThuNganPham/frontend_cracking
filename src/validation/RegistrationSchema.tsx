@@ -14,8 +14,11 @@ export const getValidationSchema = (t: (key: string) => string) => {
         /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
         t('PasswordRequired')
       ),
-    securityAnswer: Yup.number()
-      .required(t('SecurityAnswerRequired'))
-      .typeError(t('SecurityAnswerMustBeNumber')),
+    phoneNumber: Yup.string()
+      .required(t('PhoneNumberRequired'))
+      .matches(
+        /^[0-9]{10,15}$/,
+        t('InvalidPhoneNumber')
+      ),
   });
 };

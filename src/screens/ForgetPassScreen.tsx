@@ -22,7 +22,7 @@ const { height } = Dimensions.get('window');
 interface ResetData {
   username: string;
   password: string;
-  securityAnswer: number; 
+  phoneNumber: string; 
 }
 
 export default function ForgetPasswordScreen() {
@@ -34,7 +34,7 @@ export default function ForgetPasswordScreen() {
     defaultValues: {
       username: '',
       password: '',
-      securityAnswer: 0,
+      phoneNumber: '',
     },
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
@@ -44,8 +44,8 @@ export default function ForgetPasswordScreen() {
     console.log('Reset data:', data);
     const response = await axiosClient.post('users/reset-password', {
       username: data.username,
-      password: data.password,
-      securityAnswer: data.securityAnswer,
+      new_password: data.password,
+      phoneNumber: data.phoneNumber,
     });
 
     showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
@@ -77,7 +77,7 @@ export default function ForgetPasswordScreen() {
 
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      {errors.securityAnswer && <Text style={styles.errorText}>{errors.securityAnswer.message}</Text>}
+      {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
 
       <CustomButton title={t('ResetPassword')} onPress={handleSubmit(onSubmit)} />
       <LinkText
