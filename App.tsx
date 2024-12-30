@@ -9,6 +9,7 @@ import ForgetPasswordScreen from '../MyApp/src/screens/ForgetPassScreen';
 import Toast from 'react-native-toast-message';
 import OTPscreen from '../MyApp/src/screens/OTPscreen';
 import SucessTestScreen from '../MyApp/src/screens/SuccessTest';
+import { LoadingProvider, useLoading } from '../MyApp/src/contexts/LoadingContext'; // Import LoadingContext
 
 const Stack = createStackNavigator();
 
@@ -55,10 +56,12 @@ const AppNavigator = () => {
 const App = () => {
   return (
     <AuthProvider>
-      <NavigationContainer linking={linking}>
-        <AppNavigator />
-        <Toast />
-      </NavigationContainer>
+       <LoadingProvider> 
+          <NavigationContainer linking={linking}>
+            <AppNavigator />
+            <Toast />
+          </NavigationContainer>
+      </LoadingProvider>
     </AuthProvider>
   );
 };

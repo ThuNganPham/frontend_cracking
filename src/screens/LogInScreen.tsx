@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../components/Title';
 import Rectangle from '../components/Image';
@@ -11,13 +11,12 @@ import axiosClient from '../api/axiosClient';
 import { useForm } from 'react-hook-form';
 import { NavigationProps } from '../navigation/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import '../../i18n';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { getValidationSchema } from '../validation/LogInSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useLoading } from '../contexts/LoadingContext'; 
 
 const { height } = Dimensions.get('window');
 
@@ -30,6 +29,7 @@ export default function LogInScreen() {
   const navigation = useNavigation<NavigationProps>();
   const { t } = useTranslation();
   const validationSchema = getValidationSchema(t);
+  const { isLoading, setIsLoading } = useLoading();
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -40,25 +40,27 @@ export default function LogInScreen() {
   });
 
   const onSubmit = async (data: LoginData) => {
-  try {
-    console.log('Login data:', data);
-    const response = await axiosClient.post('users/login', {
-      username: data.username,
-      password: data.password,
-    },{ withCredentials: true });
+    setIsLoading(true);
+    try {
+      console.log('Login data:', data);
+      const response = await axiosClient.post('users/login', {
+        username: data.username,
+        password: data.password,
+      },{ withCredentials: true });
 
-    // Lưu access token vào AsyncStorage
-    const accessToken = response.data.access_token;
-    await AsyncStorage.setItem('accessToken', accessToken);
+      const accessToken = response.data.access_token;
+      await AsyncStorage.setItem('accessToken', accessToken);
 
-    showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
-    console.log(accessToken);
-    navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
-  } catch (error: any) {
-    console.error('Error during registration:', error.response?.data || error.message);
-    showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
-  }
-};
+      showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
+      console.log(accessToken);
+      navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
+    } catch (error: any) {
+      console.error('Error during registration:', error.response?.data || error.message);
+      showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
+    } finally {
+        setIsLoading(false); // Tắt loading khi đã có phản hồi từ server
+      }
+  };
 
   return (
     <View style={styles.container}>
@@ -86,6 +88,12 @@ export default function LogInScreen() {
         style={styles.blackBoldText}
         onPress={() => navigation.navigate('OTPscreen', { name: 'OTPscreen' })}
       />
+
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#248A50" />
+        </View>
+      )}
     </View>
   );
 }
@@ -122,6 +130,13 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
-    height : "37%"
+    height : "37%",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 999,
   },
 });

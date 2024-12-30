@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Dimensions,ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import VanillaText from '../components/VanillaText';
 import Title from '../components/Title'
@@ -10,6 +10,7 @@ import { NavigationProps } from '../navigation/navigation';
 import '../../i18n';
 import axiosClient from '../api/axiosClient';
 import { showToast } from '../utils/toastHelper'; 
+import { useLoading } from '../contexts/LoadingContext'; 
 
 
 const { width, height } = Dimensions.get('window');
@@ -17,6 +18,8 @@ const { width, height } = Dimensions.get('window');
 export default function OTPScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<NavigationProps>();
+  const { isLoading, setIsLoading } = useLoading();
+
   interface PostOTPData {
      username: string,
      otp: string
@@ -46,20 +49,24 @@ export default function OTPScreen() {
 
 
   const onSubmit = async (data: PostOTPData) => {
-  try {
-    console.log('Reset data:', data);
-    const response = await axiosClient.post('users/verify-otp', {
-      username: data.username,
-      otp: data.otp
-    });
+        setIsLoading(true);
+        try {
+          console.log('Reset data:', data);
+          const response = await axiosClient.post('users/verify-otp', {
+            username: data.username,
+            otp: data.otp
+          });
 
-    showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
+          showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
 
-    navigation.navigate('OTPscreen', { name: 'OTPscreen' });
-  } catch (error: any) {
-    console.error('Error during registration:', error.response?.data || error.message);
-    showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
-  }
+          navigation.navigate('OTPscreen', { name: 'OTPscreen' });
+        } catch (error: any) {
+          console.error('Error during registration:', error.response?.data || error.message);
+          showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
+        } finally {
+        setIsLoading(false); // Tắt loading khi đã có phản hồi từ server
+      }
+        
 };
 
   return (
@@ -94,6 +101,11 @@ export default function OTPScreen() {
       <LinkText text={t('Goback')} style={styles.greyUnderlineText} onPress={() => navigation.navigate('Home', { name: 'Home' })}/>
       <CustomButton title={t('Verify')} onPress={() => console.log('hello')} />
 
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#248A50" />
+        </View>
+      )}
     </View>
   );
 }
@@ -135,5 +147,12 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: width * 0.04, 
 
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 999,
   },
 });

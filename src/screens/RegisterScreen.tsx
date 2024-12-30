@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../components/Title';
 import Rectangle from '../components/Image';
@@ -16,6 +16,7 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 import { getValidationSchema } from '../validation/RegistrationSchema';
 import { RegisterInput } from '../components/Form';
 import { showToast } from '../utils/toastHelper'; 
+import { useLoading } from '../contexts/LoadingContext'; 
 
 
 const { height } = Dimensions.get('window');
@@ -30,6 +31,8 @@ export default function RegisterScreen() {
   const navigation = useNavigation<NavigationProps>();
   const { t } = useTranslation();
   const validationSchema = getValidationSchema(t);
+  const { isLoading, setIsLoading } = useLoading();
+
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -41,6 +44,7 @@ export default function RegisterScreen() {
   });
 
   const onSubmit = async (data: RegisterData) => {
+  setIsLoading(true); 
   try {
     console.log('Register data:', data);
     const response = await axiosClient.post('users/register', {
@@ -56,7 +60,9 @@ export default function RegisterScreen() {
   } catch (error: any) {
     console.error('Error during registration:', error.response?.data || error.message);
     showToast('error', t('Error'), error.response?.data?.message || t('RegisterFailed'));
-  }
+  } finally {
+      setIsLoading(false); // Tắt loading khi đã có phản hồi từ server
+    }
 };
 
   return (
@@ -87,6 +93,11 @@ export default function RegisterScreen() {
         style={styles.blackBoldText}
         onPress={() => navigation.navigate('Home', { name: 'Home' })}
       />
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#248A50" />
+        </View>
+      )}
     </View>
   );
 }
@@ -124,5 +135,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
     height : "46%"
+  },
+    loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 999,
   },
 });
