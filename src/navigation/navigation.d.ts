@@ -8,6 +8,8 @@ export interface RootStackParamList {
   ForgetPasswordScreen: { name: string }; 
   OTPscreen: { name: string};
   SucessTestScreen: {name : string};
+  ContinueWithNumberPhone: { name : string}; 
+
 }
 
 export type NavigationProps = StackNavigationProp<RootStackParamList>;

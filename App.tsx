@@ -7,9 +7,10 @@ import RegisterScreen from '../MyApp/src/screens/RegisterScreen';
 import LogInScreen from '../MyApp/src/screens/LogInScreen';
 import ForgetPasswordScreen from '../MyApp/src/screens/ForgetPassScreen';
 import Toast from 'react-native-toast-message';
-import OTPscreen from '../MyApp/src/screens/OTPscreen';
+import OTPscreen from '../MyApp/src/firebase/OTPscreen';
 import SucessTestScreen from '../MyApp/src/screens/SuccessTest';
-import { LoadingProvider, useLoading } from '../MyApp/src/contexts/LoadingContext'; // Import LoadingContext
+import PhoneAuthProvider from '../MyApp/src/firebase/LogInWNumberPhone'
+import { LoadingProvider, useLoading } from '../MyApp/src/contexts/LoadingContext'; 
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ const AppNavigator = () => {
         // Nếu chưa đăng nhập, hiển thị các màn hình liên quan đến xác thực
         <>
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ContinueWithNumberPhone" component={PhoneAuthProvider} options={{ headerShown: false }} />
           <Stack.Screen name="CreateAccount" component={RegisterScreen} options={{ headerShown: false }} />
           <Stack.Screen name="LogInAccount" component={LogInScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} options={{ headerShown: false }} />

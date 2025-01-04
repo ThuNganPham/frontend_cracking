@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import GoogleLoginButton from "../firebase/LogInWggButton";
 import VanillaText from '../components/VanillaText'
 import RectangleCenter from '../components/ImageCenter'
-
+import LogoGoogle from '../components/svg-JSX/GGicon'
 
 import '../../i18n';
 
@@ -50,15 +50,16 @@ export default function HomeScreen() {
           <Text style={styles.italicText}>{t('homescreenLine4')}</Text>
       </VanillaText>
 
-      <CustomButton
+      {/* <CustomButton
         title={t('createAccountButton')}
         onPress={() => navigation.navigate('CreateAccount', {name: 'CreateAccount'})} 
-      />
+      /> */}
       <LinkText
         text={t('alreadyHaveAccount')}
         style={styles.blackBoldText}
-        onPress={() => navigation.navigate('LogInAccount', {name: 'LogInAccount'})} 
+        onPress={() => navigation.navigate('ContinueWithNumberPhone', {name: 'ContinueWithNumberPhone'})} 
       />
+      {/* <RectangleCenter style={styles.containerImgWtextFirst} imageSource={<LogoGoogle />} /> */}
         <GoogleLoginButton
               onSuccess={handleLoginSuccess}
               onError={handleLoginError}
@@ -98,7 +99,9 @@ const styles = StyleSheet.create({
   },
   blackBoldText: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#248A50',
+    fontSize: 16,
+
   },
   boldText: {
     fontWeight: 'bold',
