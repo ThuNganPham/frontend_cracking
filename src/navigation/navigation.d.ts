@@ -9,7 +9,7 @@ export interface RootStackParamList {
   OTPscreen: { name: string};
   SucessTestScreen: {name : string};
   ContinueWithNumberPhone: { name : string}; 
-
+  UsernameInputScreen: { name : string}
 }
 
 export type NavigationProps = StackNavigationProp<RootStackParamList>;
