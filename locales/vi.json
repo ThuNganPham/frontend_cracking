@@ -3,14 +3,13 @@
   "homescreenLine2": "Chúng ta sẽ cùng thực hiện ",
   "homescreenLine3": "phương pháp tự nhiên ",
   "homescreenLine4": "và những “chiến lược” an toàn nhất",
-  "alreadyHaveAccount": "Đăng nhập bằng số điện thoại",
+  "alreadyHaveAccount": "Đã có tài khoản?",
   "loginWithGmail": "Đăng nhập bằng Gmail",
   "createAccountButton": "Tạo tài khoản ShiSo",
   "ScreenWelcome":"Chào Mừng Bạn Đến Với ShiSo",
   "BackToLogin":"Trở lại đăng nhập",
   "Username":"Tên tài khoản",
   "Password":"Mật khẩu",
-  "SecurityNumber":"+84123456789",
   "SignUp": "Đăng Ký",
   "ForgotPassword": "Quên mật khẩu",
   "LogIn": "Đăng nhập",
@@ -20,6 +19,8 @@
   "RegisterFailed": "Đăng ký thất bại",
   "UsernameRequire": "Tên người dùng phải có ít nhất 5 ký tự, không có khoảng trắng",
   "PasswordRequired": "Mật khẩu ít nhất 5 ký tự, 1 ký tự đặc biệt, không có khoảng trống",
+  "EmailRequired":"Vui lòng nhập email",
+  "InvalidEmail": "Không đúng định dạng email",
   "MustFillUsername": "Vui lòng nhập tài khoản",
   "MustFillPassword": "Vui lòng nhập mật khẩu",
   "SecurityAnswerRequired": "Vui lòng điền số khôi phục",
@@ -33,7 +34,15 @@
   "ReceiveCode": "Bạn chưa nhận được mã? ",
   "Resend": "Gửi lại",
   "Goback": "Quay lại",
-  "Verify": "Xác minh"
+  "Verify": "Xác minh",
+  "ResetAccountSucess": "Đặt lại mật khẩu thành công!",
+  "ResetAccountFailed": "OTP không chính xác",
+  "OTPexpired": "OTP đã hết hạn",
+  "title-checkSkin": "Cho Shiso biết những vùng da đang bị tổn thương ở bạn !"
+
+
+
+
 
 
 

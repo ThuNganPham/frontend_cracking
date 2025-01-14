@@ -57,7 +57,7 @@ export default function HomeScreen() {
       <LinkText
         text={t('alreadyHaveAccount')}
         style={styles.blackBoldText}
-        onPress={() => navigation.navigate('ContinueWithNumberPhone', {name: 'ContinueWithNumberPhone'})} 
+        onPress={() => navigation.navigate('LogInAccount', {name: 'LogInAccount'})} 
       />
       {/* <RectangleCenter style={styles.containerImgWtextFirst} imageSource={<LogoGoogle />} /> */}
         <GoogleLoginButton
@@ -69,6 +69,8 @@ export default function HomeScreen() {
             <Text style={styles.separator}> | </Text>
             <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
         </View>
+        <LinkText text="Test check skin screen" onPress={() => navigation.navigate('CheckSkinScreen', {name: 'CheckSkinScreen'})} />
+
     </View>
   );
 }

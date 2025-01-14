@@ -24,7 +24,7 @@ const { height } = Dimensions.get('window');
 interface RegisterData {
   username: string;
   password: string;
-  phoneNumber: string; 
+  email: string; 
 }
 
 export default function RegisterScreen() {
@@ -38,7 +38,7 @@ export default function RegisterScreen() {
     defaultValues: {
       username: '',
       password: '',
-      phoneNumber: '',
+      email: '',
     },
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
@@ -50,11 +50,11 @@ export default function RegisterScreen() {
     const response = await axiosClient.post('users/register', {
       username: data.username,
       password: data.password,
-      securityAnswer: data.phoneNumber,
+      securityAnswer: data.email,
     });
 
 
-    showToast('success', t('Success'), response.data.message || t('Register'));
+    showToast('success', t('Success'), `chào mừng ${response.data.message} đến với ShiSo`);
 
     navigation.navigate('LogInAccount', { name: 'LogInAccount' });
   } catch (error: any) {
@@ -78,14 +78,13 @@ export default function RegisterScreen() {
         <RegisterInput
           control={control}
           name="securityAnswer"
-          placeholder={t('SecurityNumber')}
-          keyboardType="numeric"
+          placeholder="abc@gmail.com"
         />
       </KeyboardAvoidingView>
 
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
+      {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
 
       <CustomButton title={t('SignUp')} onPress={handleSubmit(onSubmit)} />
       <LinkText

@@ -14,11 +14,9 @@ export const getValidationSchema = (t: (key: string) => string) => {
         /^(?!.*\s)(?=.*[!@#$%^&*()_+=[\]{};:'",.<>?/-])[A-Za-z\d!@#$%^&*()_+=[\]{};:'",.<>?/-]{5,}$/,
         t('PasswordRequired')
       ),
-    phoneNumber: Yup.string()
-      .required(t('PhoneNumberRequired'))
-      .matches(
-        /^[0-9]{10,15}$/,
-        t('InvalidPhoneNumber')
-      ),
+    email: Yup.string()
+      .required(t('EmailRequired'))
+      .email(t('InvalidEmail')),
+
   });
 };

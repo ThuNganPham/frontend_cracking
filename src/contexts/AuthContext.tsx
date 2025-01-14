@@ -2,14 +2,12 @@ import React, { createContext, useState, useEffect, ReactNode, useContext } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 
-// Interface cho token đã giải mã
 interface DecodedToken {
   exp: number;
-  username: string; // Thêm thông tin username từ token
+  username: string; 
   [key: string]: any;
 }
 
-// Interface cho AuthContext, bổ sung username
 interface AuthContextType {
   isLoggedIn: boolean | null;
   setIsLoggedIn: (value: boolean) => void;
@@ -42,13 +40,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const decodedToken: DecodedToken = jwt_decode(token);
         const currentTime = Date.now() / 1000;
 
-        // Lưu thông tin username từ token
         setUsername(decodedToken.username);
 
         setIsLoggedIn(decodedToken.exp > currentTime);
         const savedUsername = await AsyncStorage.getItem('@username');
         if (savedUsername) {
-          setUsername(savedUsername); // Cập nhật context với username đã lưu
+          setUsername(savedUsername); 
         }
       } catch (error) {
         console.error('Error in checkToken:', error);

@@ -51,7 +51,7 @@ export default function LogInScreen() {
       const accessToken = response.data.access_token;
       await AsyncStorage.setItem('accessToken', accessToken);
 
-      showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
+      showToast('success', t('Success'), t('LoginSuccess'));
       console.log(accessToken);
       navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
     } catch (error: any) {

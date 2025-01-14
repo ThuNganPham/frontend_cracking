@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface CustomButtonProps {
   title: string;
-  onPress: () => void;
+  onPress: any; // tu sua saus
   color?: string;
 }
 

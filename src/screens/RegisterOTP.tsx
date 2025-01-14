@@ -13,6 +13,7 @@ import { showToast } from '../utils/toastHelper';
 import { useLoading } from '../contexts/LoadingContext'; 
 
 
+
 const { width, height } = Dimensions.get('window');
 
 export default function OTPScreen() {
@@ -22,11 +23,10 @@ export default function OTPScreen() {
 
   interface PostOTPData {
      username: string,
-     password:string,
      otp: string
 }
 
-  
+ 
 
   const [otp, setOtp] = useState(['', '', '', '']); // Trạng thái mã OTP
   const inputRefs = useRef<Array<TextInput | null>>([]); // Tạo refs cho các ô input
@@ -55,7 +55,6 @@ export default function OTPScreen() {
           console.log('Reset data:', data);
           const response = await axiosClient.post('users/verify-otp', {
             username: data.username,
-            password: data.password,
             otp: data.otp
           });
 
@@ -106,7 +105,7 @@ export default function OTPScreen() {
               <LinkText text={t('Resend')} style={styles.greyUnderlineText} onPress={() => console.log('hello world')}/>
       </VanillaText>
       <LinkText text={t('Goback')} style={styles.greyUnderlineText} onPress={() => navigation.navigate('Home', { name: 'Home' })}/>
-      <CustomButton title={t('Verify')} onPress={() => console.log('hello')} />
+      <CustomButton title={t('Verify')} onPress={(onSubmit)} />
 
       {isLoading && (
         <View style={styles.loadingOverlay}>

@@ -21,9 +21,8 @@ import { useLoading } from '../contexts/LoadingContext';
 const { height } = Dimensions.get('window');
 
 interface ResetData {
-  username: string;
   password: string;
-  phoneNumber: string; 
+  email: string; 
 }
 
 export default function ForgetPasswordScreen() {
@@ -34,9 +33,8 @@ export default function ForgetPasswordScreen() {
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      username: '',
       password: '',
-      phoneNumber: '',
+      email: '',
     },
     resolver: yupResolver(validationSchema, { abortEarly: false }),
   });
@@ -46,9 +44,8 @@ export default function ForgetPasswordScreen() {
   try {
     console.log('Reset data:', data);
     const response = await axiosClient.post('users/reset-password', {
-      username: data.username,
       new_password: data.password,
-      phoneNumber: data.phoneNumber,
+      securityAnswer: data.email,
     });
 
     showToast('success', t('Success'), response.data.message || t('LoginSuccess'));
@@ -58,7 +55,7 @@ export default function ForgetPasswordScreen() {
     console.error('Error during registration:', error.response?.data || error.message);
     showToast('error', t('Error'), error.response?.data?.message || t('LogInFailed'));
   } finally {
-        setIsLoading(false); // Tắt loading khi đã có phản hồi từ server
+        setIsLoading(false); 
   }
 };
 
@@ -70,19 +67,12 @@ export default function ForgetPasswordScreen() {
       <KeyboardAvoidingView style={styles.formContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Rectangle imageSource={<ShisoAuthenImage />} />
-        <RegisterInput control={control} name="username" placeholder={t('Username')} />
+        <RegisterInput control={control} name="email" placeholder='Email'/>
         <RegisterInput control={control} name="password" placeholder={t('NewPassWord')} secureTextEntry />
-        <RegisterInput
-          control={control}
-          name="securityAnswer"
-          placeholder={t('SecurityNumber')}
-          keyboardType="numeric"
-        />
       </KeyboardAvoidingView>
 
-      {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
+      {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
 
       <CustomButton title={t('ResetPassword')} onPress={handleSubmit(onSubmit)} />
       <LinkText
