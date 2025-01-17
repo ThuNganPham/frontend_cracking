@@ -7,13 +7,17 @@ import RegisterScreen from '../MyApp/src/screens/RegisterScreen';
 import LogInScreen from '../MyApp/src/screens/LogInScreen';
 import ForgetPasswordScreen from '../MyApp/src/screens/ForgetPassScreen';
 import Toast from 'react-native-toast-message';
+import { Dimensions } from 'react-native';
 import SucessTestScreen from '../MyApp/src/screens/SuccessTest';
 import { LoadingProvider, useLoading } from '../MyApp/src/contexts/LoadingContext'; 
 import CheckSkinScreen from '../MyApp/src/screens/CheckSkin';
 import OTPScreen from './src/screens/OTPscreen';
+import CircleSkinProcess from '../MyApp/src/screens/CircleSkinProcess';
+import { CustomHeader } from './src/components/CustomHeader';
+import { CircleProvider } from '../MyApp/src/contexts/CircleContext'; 
 
 const Stack = createStackNavigator();
-
+const { width } = Dimensions.get('window');
 const linking = {
   prefixes: ['https://ShiSo.app', 'com.googleusercontent.apps.399164063066-qr9i2slnuaqd8h8cq53m2nu7droii99i:/'],
   config: {
@@ -49,7 +53,10 @@ const AppNavigator = () => {
           <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SucessTestScreen" component={SucessTestScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CheckSkinScreen" component={CheckSkinScreen} options={{ headerShown: false }} />
-
+          <Stack.Screen name="CircleSkinProcess" component={CircleSkinProcess} 
+          options={{
+              header: () => <CustomHeader />,
+            }} />
         </>
       )}
     </Stack.Navigator>
@@ -58,6 +65,7 @@ const AppNavigator = () => {
 
 const App = () => {
   return (
+    <CircleProvider>
     <AuthProvider>
        <LoadingProvider> 
           <NavigationContainer linking={linking}>
@@ -66,6 +74,8 @@ const App = () => {
           </NavigationContainer>
       </LoadingProvider>
     </AuthProvider>
+    </CircleProvider>
+
   );
 };
 

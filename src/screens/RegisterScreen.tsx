@@ -78,7 +78,7 @@ export default function RegisterScreen() {
         <RegisterInput
           control={control}
           name="securityAnswer"
-          placeholder="abc@gmail.com"
+          placeholder="ShiSoHello@gmail.com"
         />
       </KeyboardAvoidingView>
 

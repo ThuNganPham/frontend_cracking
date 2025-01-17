@@ -9,6 +9,7 @@
     "paths": {
       "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
     },
+    "types": ["react", "react-native"],
     "strict": true,
     "allowJs": true,
     "checkJs": false

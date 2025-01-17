@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, StyleSheet , GestureResponderEvent} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 
-interface CustomButtonProps {
-  title: string;
-  onPress: ((event: GestureResponderEvent) => void);
-  color?: string;
+interface PostOTPData {
+  username: string;
+  password: string;
+  otp: string;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, color = '#248A50' }) => {
+interface CustomButtonProps<T = void> {
+  title: string;
+  onPress: (data: T) => void | Promise<void>;  
+  color?: string;
+  customData?: T; 
+}
+
+const CustomButton: React.FC<CustomButtonProps<PostOTPData>> = ({ title, onPress, color = '#248A50', customData }) => {
   const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = (event: GestureResponderEvent) => {
+    if (customData) {
+      onPress(customData); 
+    }
+  };
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         { backgroundColor: isPressed ? '#1E6E43' : color }, 
-        isPressed && styles.pressedShadow,
+        isPressed && styles.pressedShadow, 
       ]}
-      onPress={onPress}
-      activeOpacity={0.8} 
-      onPressIn={() => setIsPressed(true)}
+      onPress={handlePress} 
+      activeOpacity={0.8}
+      onPressIn={() => setIsPressed(true)} 
       onPressOut={() => setIsPressed(false)} 
     >
       <Text style={styles.text}>{title}</Text>

@@ -50,10 +50,10 @@ export default function HomeScreen() {
           <Text style={styles.italicText}>{t('homescreenLine4')}</Text>
       </VanillaText>
 
-      {/* <CustomButton
+      <CustomButton
         title={t('createAccountButton')}
         onPress={() => navigation.navigate('CreateAccount', {name: 'CreateAccount'})} 
-      /> */}
+      />
       <LinkText
         text={t('alreadyHaveAccount')}
         style={styles.blackBoldText}

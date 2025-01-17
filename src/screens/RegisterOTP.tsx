@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import VanillaText from '../components/VanillaText';
 import Title from '../components/Title'
 import LinkText from '../components/LinkText'
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/CustomButtonRegister';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../navigation/navigation';
 import '../../i18n';
