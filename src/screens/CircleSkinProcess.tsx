@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext , useEffect} from 'react';
 import { Text, View, StyleSheet, Dimensions, GestureResponderEvent } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Circle from '../../assets/circle.svg';
@@ -23,13 +23,17 @@ export default function CircleSkinProcess() {
   const navigation = useNavigation<NavigationProps>();
   const { count, setCount } = useContext(CircleContext); 
   const [circlePositions, setCirclePositions] = useState<Position[]>([]); 
-  const [circleCounts, setCircleCounts] = useState({
-    head: 0,
-    upperLimb: 0,
-    lowerLimb: 0,
-    trunk: 0,
-  });
 
+const countPointsOnHead = () => {
+  // Lọc các điểm trong phạm vi đầu
+  const pointsOnHead = circlePositions.filter((position) => {
+    return position.x >= 95.98 && position.x <= 161.43 && position.y >= 2.18 && position.y <= 80.71;
+  });
+  
+  console.log(pointsOnHead.length);
+  return pointsOnHead.length;
+};
+countPointsOnHead();
 const handlePress = (event: GestureResponderEvent) => {
   const { locationX, locationY } = event.nativeEvent;
   const newPosition = { x: locationX, y: locationY };
@@ -45,6 +49,13 @@ const handlePress = (event: GestureResponderEvent) => {
     setCirclePositions([]); 
     setCount(0); 
   };
+  // const headPointsCount = countPointsOnHead();  // Tính tổng số chấm trên đầu
+  // sendHeadPointsCount(headPointsCount);  // Gửi qua axios
+  //sẽ gửi dạng : await axios.post('/your-api-endpoint', { headPoints: headPointsCount });
+  useEffect(() => {
+  // Gọi hàm đếm sau khi circlePositions thay đổi
+  countPointsOnHead();
+  }, [circlePositions]); 
 
   return (
     <View style={styles.container}>
