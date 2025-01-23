@@ -11,6 +11,7 @@ import '../../i18n';
 import axiosClient from '../api/axiosClient';
 import { showToast } from '../utils/toastHelper'; 
 import { useLoading } from '../contexts/LoadingContext'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const { width, height } = Dimensions.get('window');
@@ -28,7 +29,7 @@ export default function OTPScreen() {
 
   
 
-  const [otp, setOtp] = useState(['', '', '', '']); // Trạng thái mã OTP
+  const [otp, setOtp] = useState(['', '', '', '','','']); // Trạng thái mã OTP
   const inputRefs = useRef<Array<TextInput | null>>([]); // Tạo refs cho các ô input
 
   const handleOtpChange = (text: string, index: number) => {
@@ -50,6 +51,12 @@ export default function OTPScreen() {
 
 
   const onSubmit = async (data: PostOTPData) => {
+        const otpCode = otp.join(''); 
+
+        if (otpCode.length !== 6) {
+          showToast('error', t('Error'), t('OTPInvalid')); 
+          return;
+        }
         setIsLoading(true);
         try {
           console.log('Reset data:', data);
@@ -57,11 +64,11 @@ export default function OTPScreen() {
             username: data.username,
             password: data.password,
             otp: data.otp
-          });
+          });      
 
           showToast('success', t('Success'), t('ResetAccountSucess'));
 
-          navigation.navigate('OTPscreen', { name: 'OTPscreen' });
+          navigation.navigate('LogInAccount', { name: 'LogInAccount' });
         } catch (error: any) {
           console.error('Error during registration:', error.response?.data || error.message);
           showToast('error', t('Error'), 

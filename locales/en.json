@@ -32,7 +32,7 @@
   "ResetPassword": "Reset Password",
   "BackToHomeScreen":"Back to home screen",
   "VerificationCode":"Verification Code",
-  "VerificationDescription":"Enter the code sent to your device address",
+  "VerificationDescription":"Enter the code sent to your email address",
   "ReceiveCode": "Didn't receive the code? ",
   "Resend": "Resend",
   "Goback": "Go back",
@@ -40,5 +40,6 @@
   "ResetAccountSucess": "Reset Password successfully!",
   "ResetAccountFailed": "Invalid OTP ",
   "OTPexpired": "OTP expired",
-  "title-checkSkin": "Let Shiso know which areas of your skin are affected !"
+  "title-checkSkin": "Let Shiso know which areas of your skin are affected !",
+  "RegisterAccountSucess":"successfully registered !"
 }

@@ -64,12 +64,11 @@ export default function ForgetPasswordScreen() {
       <View style={styles.firstImageWithTextContainer}>
         <Title text={t('ScreenWelcome')} />
       </View>
-      <KeyboardAvoidingView style={styles.formContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <Rectangle imageSource={<ShisoAuthenImage />} />
+      <View style={styles.formContainer}>
+          <Rectangle imageSource={<ShisoAuthenImage />} />
         <RegisterInput control={control} name="email" placeholder='Email'/>
         <RegisterInput control={control} name="password" placeholder={t('NewPassWord')} secureTextEntry />
-      </KeyboardAvoidingView>
+      </View>
 
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
       {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
@@ -120,9 +119,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 5,
-    marginBottom: 20,
-    height : "46%"
-
+    marginBottom: 50,
+    flexShrink: 0,
+    // maxHeight: '39%',
+    flexGrow: 0.01,
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,

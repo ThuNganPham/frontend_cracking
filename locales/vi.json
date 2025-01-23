@@ -27,10 +27,10 @@
   "LoginSuccess": "Đăng nhập thành công!",
   "LogInFailed": "Đăng nhập thất bại",
   "NewPassWord": "Mật khẩu mới",
-  "ResetPassword": "Đặt lại mậu khẩu",
+  "ResetPassword": "Đặt lại mật khẩu",
   "BackToHomeScreen": "Quay lại trang chủ",
   "VerificationCode": "Mã xác minh",
-  "VerificationDescription":"Nhập mã số được gửi tới địa chỉ thiết bị của bạn",
+  "VerificationDescription":"Nhập mã số được gửi tới địa chỉ gmail của bạn",
   "ReceiveCode": "Bạn chưa nhận được mã? ",
   "Resend": "Gửi lại",
   "Goback": "Quay lại",
@@ -38,7 +38,9 @@
   "ResetAccountSucess": "Đặt lại mật khẩu thành công!",
   "ResetAccountFailed": "OTP không chính xác",
   "OTPexpired": "OTP đã hết hạn",
-  "title-checkSkin": "Cho Shiso biết những vùng da đang bị tổn thương ở bạn !"
+  "title-checkSkin": "Cho Shiso biết những vùng da đang bị tổn thương ở bạn !",
+  "RegisterAccountSucess":"đăng ký thành công !"
+
 
 
 

@@ -1,15 +1,19 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Title from '../components/Title'
+import { useAuth } from '../contexts/AuthContext'; 
 
 
 
 const { width, height } = Dimensions.get('window');
 
 export default function SucessTestScreen() {
+  const { username } = useAuth();
+
   return (
     <View style={styles.container}>
-      <Title style={styles.titleText} text="Đăng nhập thành công. Dữ liệu đã được lưu vào AsyncStorage"  />
+      <Title style={styles.titleText} 
+       text={`Chào mừng, ${username}! Đăng nhập thành công. Dữ liệu đã được lưu vào AsyncStorage với trạng thái Verified`} />
     </View>
   );
 }

@@ -67,12 +67,11 @@ export default function LogInScreen() {
       <View style={styles.firstImageWithTextContainer}>
         <Title text={t('ScreenWelcome')} />
       </View>
-      <KeyboardAvoidingView style={styles.formContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View style={styles.formContainer}>
         <Rectangle imageSource={<ShisoAuthenImage />} />
         <RegisterInput control={control} name="username" placeholder={t('Username')} />
         <RegisterInput control={control} name="password" placeholder={t('Password')} secureTextEntry />
-      </KeyboardAvoidingView>
+      </View>
 
       {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
       {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
@@ -82,11 +81,6 @@ export default function LogInScreen() {
         text={t('ForgotPassword')}
         style={styles.blackBoldText}
         onPress={() => navigation.navigate('ForgetPasswordScreen', { name: 'ForgetPasswordScreen' })}
-      />
-      <LinkText
-        text="test screen OTP cái"
-        style={styles.blackBoldText}
-        onPress={() => navigation.navigate('OTPscreen', { name: 'OTPscreen' })}
       />
 
       {isLoading && (
@@ -129,9 +123,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 5,
-    marginBottom: 20,
-    height : "37%",
-  },
+    marginBottom: 50,
+    // flexShrink: 0,
+    // maxHeight: '48.8%',
+    flexGrow: 0.01, 
+   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',

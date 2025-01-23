@@ -11,24 +11,33 @@ import '../../i18n';
 import axiosClient from '../api/axiosClient';
 import { showToast } from '../utils/toastHelper'; 
 import { useLoading } from '../contexts/LoadingContext'; 
+import { useAuth } from '../contexts/AuthContext'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
 
 
 
 const { width, height } = Dimensions.get('window');
 
-export default function OTPScreen() {
+interface DecodedToken {
+  username: string;
+  sub: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+
+export default function RegisterOTPScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<NavigationProps>();
   const { isLoading, setIsLoading } = useLoading();
+  const { username, setIsLoggedIn, setUsername } = useAuth();
 
   interface PostOTPData {
      username: string,
      otp: string
 }
-
- 
-
-  const [otp, setOtp] = useState(['', '', '', '']); // Trạng thái mã OTP
+  const [otp, setOtp] = useState(['', '', '', '','','']); // Trạng thái mã OTP
   const inputRefs = useRef<Array<TextInput | null>>([]); // Tạo refs cho các ô input
 
   const handleOtpChange = (text: string, index: number) => {
@@ -47,33 +56,60 @@ export default function OTPScreen() {
       inputRefs.current[index - 1]?.focus();
     }
   };
-
-
-  const onSubmit = async (data: PostOTPData) => {
-        setIsLoading(true);
-        try {
-          console.log('Reset data:', data);
-          const response = await axiosClient.post('users/verify-otp', {
-            username: data.username,
-            otp: data.otp
-          });
-
-          showToast('success', t('Success'), t('ResetAccountSucess'));
-
-          navigation.navigate('OTPscreen', { name: 'OTPscreen' });
-        } catch (error: any) {
-          console.error('Error during registration:', error.response?.data || error.message);
-          showToast('error', t('Error'), 
-            error.response?.data?.message === 'OTP expired' 
-              ? t('OTPexpired') 
-              : error.response?.data?.message || t('ResetAccountFailed')
-          );
-
-        } finally {
-        setIsLoading(false); // Tắt loading khi đã có phản hồi từ server
-      }
-        
+ const handleResendOTP = async () => {
+  try {
+    setIsLoading(true);
+    await axiosClient.post('users/get-otp-forget-password', { username }); // Backend kiểm tra username
+    showToast('success', t('Success'), t('OTPSent'));
+  } catch (error: any) {
+    console.error('Error resending OTP:', error.response?.data || error.message);
+    showToast('error', t('Error'), t('ResendOTPFailed'));
+  } finally {
+    setIsLoading(false);
+  }
 };
+
+const handleVerifyOTP = async () => {
+  const otpCode = otp.join(''); 
+
+  if (otpCode.length !== 6) {
+    showToast('error', t('Error'), t('OTPInvalid')); 
+    return;
+  }
+
+  try {
+    setIsLoading(true);
+     const response = await axiosClient.post('users/verify-otp', {
+      username,
+      otp: otpCode,
+    });
+
+        // Lấy token lưu vào AsyncStorage rồi Cập nhật trạng thái trong AuthContext
+    const { access_token } = response.data.access_token; 
+    await AsyncStorage.setItem('access_token', access_token); 
+    await AsyncStorage.setItem('@username', username ?? ''); // nếu null nó cho epty
+
+    const decodedToken: DecodedToken = jwt_decode(access_token);
+
+    
+    setUsername(decodedToken.username);
+    setIsLoggedIn(true);
+    showToast('success', t('Success'), t('RegisterAccountSucess'));
+    navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
+  } catch (error: any) {
+    console.error('Error during OTP verification:', error.response?.data || error.message);
+    showToast(
+      'error',
+      t('Error'),
+      error.response?.data?.message === 'OTP expired'
+        ? t('OTPexpired')
+        : error.response?.data?.message || t('ResetAccountFailed')
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -102,10 +138,10 @@ export default function OTPScreen() {
       </View>
       <VanillaText>
               <Text style={styles.normalText}>{t('ReceiveCode')}</Text>
-              <LinkText text={t('Resend')} style={styles.greyUnderlineText} onPress={() => console.log('hello world')}/>
+              <LinkText text={t('Resend')} style={styles.greyUnderlineText} onPress={(handleResendOTP)}/>
       </VanillaText>
-      <LinkText text={t('Goback')} style={styles.greyUnderlineText} onPress={() => navigation.navigate('Home', { name: 'Home' })}/>
-      <CustomButton title={t('Verify')} onPress={(onSubmit)} />
+      <LinkText text={t('Goback')} style={styles.greyUnderlineText} onPress={() => navigation.navigate('CreateAccount', { name: 'CreateAccount' })}/>
+      <CustomButton title={t('Verify')} onPress={(handleVerifyOTP)} />
 
       {isLoading && (
         <View style={styles.loadingOverlay}>
@@ -138,9 +174,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   otpInput: {
-    width: width * 0.15, 
-    height: width * 0.15, 
-    marginHorizontal: width * 0.02, 
+    width: width * 0.12,
+    height: width * 0.12, 
+    marginHorizontal: width * 0.01, 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,

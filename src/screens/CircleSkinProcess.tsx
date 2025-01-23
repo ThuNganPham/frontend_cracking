@@ -22,7 +22,7 @@ type Position = {
 export default function CircleSkinProcess() {
   const navigation = useNavigation<NavigationProps>();
   const { count, setCount } = useContext(CircleContext); 
-  const [circlePositions, setCirclePositions] = useState<Position[]>([]); // Lưu danh sách các vị trí
+  const [circlePositions, setCirclePositions] = useState<Position[]>([]); 
   const [circleCounts, setCircleCounts] = useState({
     head: 0,
     upperLimb: 0,
@@ -36,23 +36,22 @@ const handlePress = (event: GestureResponderEvent) => {
 
   setCirclePositions((prev) => {
     const updated = [...prev, newPosition];
-    return updated; // Chỉ cập nhật state ở đây
+    return updated; 
   });
 
-  setCount((prevCount: number) => prevCount + 1); // Cập nhật state Context ở đây
+  setCount((prevCount: number) => prevCount + 1); 
   };
     const resetSelection = () => {
-    setCirclePositions([]); // Reset danh sách vị trí
-    setCount(0); // Reset bộ đếm
+    setCirclePositions([]); 
+    setCount(0); 
   };
 
   return (
     <View style={styles.container}>
-      {/* SVG Container */}
       <View
         style={styles.svgContainer}
         onStartShouldSetResponder={() => true}
-        onResponderRelease={handlePress} // Xử lý khi nhấn
+        onResponderRelease={handlePress} 
       >
         <ColorOutline
           width={width * 0.65}
@@ -64,15 +63,14 @@ const handlePress = (event: GestureResponderEvent) => {
           height={height * 0.65}
           style={[styles.svg, styles.transParentOutline]}
         />
-        {/* Lặp qua danh sách vị trí để hiển thị các vòng tròn */}
         {circlePositions.map((position, index) => (
           <Circle
-            key={index} // Sử dụng chỉ số làm khóa duy nhất
+            key={index} 
             width={30}
             height={30}
             style={{
               position: 'absolute',
-              top: position.y - 15, // Điều chỉnh để vòng tròn nằm chính giữa
+              top: position.y - 15, 
               left: position.x - 15,
             }}
           />
@@ -90,17 +88,16 @@ const handlePress = (event: GestureResponderEvent) => {
         />
       </View>
 
-      {/* Footer */}
       <HorizontalWhiteBar style={styles.layout}>
         <Text style={styles.footerText}>
-          Phóng to để dễ dàng chọn. 
+          Phóng to để dễ dàng chọn 
         </Text>
+        <Zoom width={width * 0.055} height={height * 0.02} />
         <LinkText
-          text=" Chọn lại"
+          text=" Chọn lại. "
           style={styles.boldUnderlineText}
           onPress={resetSelection} 
         />
-        <Zoom width={width * 0.055} height={height * 0.02} />
         <LinkText
           text="Hoàn tất"
           style={styles.boldUnderlineText}
@@ -155,4 +152,3 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
-

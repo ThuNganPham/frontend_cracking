@@ -15,7 +15,7 @@ import OTPScreen from './src/screens/OTPscreen';
 import CircleSkinProcess from '../MyApp/src/screens/CircleSkinProcess';
 import { CustomHeader } from './src/components/CustomHeader';
 import { CircleProvider } from '../MyApp/src/contexts/CircleContext'; 
-
+import RegisterOTPScreen from '../MyApp/src/screens/RegisterOTP'
 const Stack = createStackNavigator();
 const { width } = Dimensions.get('window');
 const linking = {
@@ -50,6 +50,7 @@ const AppNavigator = () => {
           <Stack.Screen name="CreateAccount" component={RegisterScreen} options={{ headerShown: false }} />
           <Stack.Screen name="LogInAccount" component={LogInScreen} options={{ headerShown: false }} />
           <Stack.Screen name="OTPscreen" component={OTPScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="RegisterOTPScreen" component={RegisterOTPScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SucessTestScreen" component={SucessTestScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CheckSkinScreen" component={CheckSkinScreen} options={{ headerShown: false }} />

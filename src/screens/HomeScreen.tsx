@@ -27,7 +27,7 @@ export default function HomeScreen() {
 
    const handleLoginSuccess = (user: any) => {
     console.log("Logged in user successfully:", user);
-    navigation.navigate('SucessTestScreen', { name: 'SucessTestScreen' });
+    navigation.navigate('CheckSkinScreen', { name: 'CheckSkinScreen' });
 
   };
 
@@ -69,7 +69,7 @@ export default function HomeScreen() {
             <Text style={styles.separator}> | </Text>
             <LinkText text="VI" onPress={() => handleLanguageChange('vi')} />
         </View>
-        <LinkText text="Test check skin screen" onPress={() => navigation.navigate('CheckSkinScreen', {name: 'CheckSkinScreen'})} />
+        {/* <LinkText text="Test check skin screen" onPress={() => navigation.navigate('CheckSkinScreen', {name: 'CheckSkinScreen'})} /> */}
 
     </View>
   );
