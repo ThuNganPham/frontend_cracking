@@ -1,4 +1,4 @@
-import React, { useState, useContext , useEffect} from 'react';
+import React, { useState, useContext , useRef} from 'react';
 import { Text, View, StyleSheet, Dimensions, GestureResponderEvent } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Circle from '../../assets/circle.svg';
@@ -23,39 +23,38 @@ export default function CircleSkinProcess() {
   const navigation = useNavigation<NavigationProps>();
   const { count, setCount } = useContext(CircleContext); 
   const [circlePositions, setCirclePositions] = useState<Position[]>([]); 
+  // useRef không bị ảnh hưởng bởi render => cập nhật ngay lập tức
+  const circlePositionsRef = useRef<Position[]>([]);
+  const pointsOnHeadRef = useRef<number>(0);
 
-const countPointsOnHead = () => {
-  // Lọc các điểm trong phạm vi đầu
-  const pointsOnHead = circlePositions.filter((position) => {
-    return position.x >= 95.98 && position.x <= 161.43 && position.y >= 2.18 && position.y <= 80.71;
-  });
-  
-  console.log(pointsOnHead.length);
-  return pointsOnHead.length;
-};
-countPointsOnHead();
-const handlePress = (event: GestureResponderEvent) => {
-  const { locationX, locationY } = event.nativeEvent;
-  const newPosition = { x: locationX, y: locationY };
+  const handlePress = (event: GestureResponderEvent) => {
+    const { locationX, locationY } = event.nativeEvent;
+    const newPosition = { x: locationX, y: locationY };
 
-  setCirclePositions((prev) => {
-    const updated = [...prev, newPosition];
-    return updated; 
-  });
+    // Cập nhật danh sách điểm trong ref
+    circlePositionsRef.current = [...circlePositionsRef.current, newPosition];
 
-  setCount((prevCount: number) => prevCount + 1); 
+      if (
+    newPosition.x >= 97.39 &&
+    newPosition.x <= 180 &&
+    newPosition.y >= 6.72 &&
+    newPosition.y <= 125
+  ) {
+    pointsOnHeadRef.current += 1; 
+    console.log('Điểm mới thuộc vùng đầu:', pointsOnHeadRef.current);
+  }
+    setCirclePositions(circlePositionsRef.current);
+    setCount((prevCount) => prevCount + 1);
   };
-    const resetSelection = () => {
-    setCirclePositions([]); 
-    setCount(0); 
+
+  const resetSelection = () => {
+    // Reset biến tạm
+    circlePositionsRef.current = [];
+    pointsOnHeadRef.current =0;
+    // Reset state
+    setCirclePositions([]);
+    setCount(0);
   };
-  // const headPointsCount = countPointsOnHead();  // Tính tổng số chấm trên đầu
-  // sendHeadPointsCount(headPointsCount);  // Gửi qua axios
-  //sẽ gửi dạng : await axios.post('/your-api-endpoint', { headPoints: headPointsCount });
-  useEffect(() => {
-  // Gọi hàm đếm sau khi circlePositions thay đổi
-  countPointsOnHead();
-  }, [circlePositions]); 
 
   return (
     <View style={styles.container}>
@@ -163,3 +162,11 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
+
+
+  // const pointsOnHead = circlePositionsRef.current.filter((position) => {
+  //   return position.x >= 95.98 && position.x <= 161.43 && position.y >= 2.18 && position.y <= 80.71;
+  // });
+  // const headPointsCount = countPointsOnHead();  // Tính tổng số chấm trên đầu
+  // sendHeadPointsCount(headPointsCount);  // Gửi qua axios
+  //sẽ gửi dạng : await axios.post('/your-api-endpoint', { headPoints: headPointsCount });
