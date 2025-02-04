@@ -39,7 +39,11 @@
   "ResetAccountFailed": "OTP không chính xác",
   "OTPexpired": "OTP đã hết hạn",
   "title-checkSkin": "Cho Shiso biết những vùng da đang bị tổn thương ở bạn !",
-  "RegisterAccountSucess":"đăng ký thành công !"
+  "RegisterAccountSucess":"đăng ký thành công !",
+  "LimitError" : "Đã đạt giới hạn chọn",
+  "PointsSelected": "điểm đã chọn"
+
+
 
 
 

@@ -41,5 +41,8 @@
   "ResetAccountFailed": "Invalid OTP ",
   "OTPexpired": "OTP expired",
   "title-checkSkin": "Let Shiso know which areas of your skin are affected !",
-  "RegisterAccountSucess":"successfully registered !"
+  "RegisterAccountSucess":"successfully registered !",
+  "LimitError" : "Selection limit reached",
+  "PointsSelected": "point(s) selected"
+
 }

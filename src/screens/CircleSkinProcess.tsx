@@ -13,6 +13,7 @@ import { NavigationProps } from '../navigation/navigation';
 import { CircleContext } from '../contexts/CircleContext';
 
 const { width, height } = Dimensions.get('window');
+const MAX_ALLOWED_PRESS = 50;
 
 // Kích thước gốc của hình SVG từ Inkscape
 const SVG_WIDTH = 241;
@@ -32,19 +33,47 @@ export default function CircleSkinProcess() {
   const { count, setCount } = useContext(CircleContext);
   const [circlePositions, setCirclePositions] = useState<Position[]>([]);
   const circlePositionsRef = useRef<Position[]>([]);
+  const pointsOnHeadRef = useRef<number>(0);
 
   const handlePress = (event: GestureResponderEvent) => {
+    if (count >= 51) {
+    console.log("Đã đạt giới hạn số lần chọn hợp lệ.");
+    return;
+    }
     const { locationX, locationY } = event.nativeEvent;
 
     // Chuyển đổi tọa độ touch về tỷ lệ gốc của SVG
     const normalizedX = locationX / scaleX;
     const normalizedY = locationY / scaleY;
 
-    console.log(`Tọa độ chuẩn hóa: x = ${normalizedX}, y = ${normalizedY}`);
+    // console.log(`Tọa độ chuẩn hóa: x = ${normalizedX}, y = ${normalizedY}`);
 
+      // Kiểm tra nếu điểm bấm thuộc vùng đầu
+    const isHeadRegion =
+      (normalizedX >= 103.43 && normalizedX <= 155 && normalizedY >= 23 && normalizedY <= 89.23) ||
+      (normalizedX >= 116 && normalizedX <= 147 && normalizedY >= 93.8 && normalizedY <= 104.7);
+
+    if (!isHeadRegion) {
+      console.log("Điểm bấm không nằm trong vùng đầu, bỏ qua.");
+      return;
+    }
     // Cập nhật danh sách điểm trong ref
     const newPosition = { x: normalizedX, y: normalizedY };
     circlePositionsRef.current = [...circlePositionsRef.current, newPosition];
+
+    if (
+      newPosition.x >= 103.43 &&
+      newPosition.x <= 155 &&
+      newPosition.y >= 23 &&
+      newPosition.y <= 89.23 ||
+      newPosition.x >= 116 &&
+      newPosition.x <= 147 &&
+      newPosition.y >= 93.8 &&
+      newPosition.y <= 104.7 
+    ) {
+      pointsOnHeadRef.current += 1;
+      console.log('Điểm mới thuộc vùng đầu:', pointsOnHeadRef.current);
+    }
 
     // Cập nhật state để hiển thị trên UI
     setCirclePositions(circlePositionsRef.current);
@@ -53,6 +82,7 @@ export default function CircleSkinProcess() {
 
   const resetSelection = () => {
     circlePositionsRef.current = [];
+    pointsOnHeadRef.current = 0;
     setCirclePositions([]);
     setCount(0);
   };
