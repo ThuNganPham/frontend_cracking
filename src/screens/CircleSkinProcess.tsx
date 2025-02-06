@@ -13,7 +13,6 @@ import { NavigationProps } from '../navigation/navigation';
 import { CircleContext } from '../contexts/CircleContext';
 
 const { width, height } = Dimensions.get('window');
-const MAX_ALLOWED_PRESS = 50;
 
 // Kích thước gốc của hình SVG từ Inkscape
 const SVG_WIDTH = 241;
@@ -34,59 +33,71 @@ export default function CircleSkinProcess() {
   const [circlePositions, setCirclePositions] = useState<Position[]>([]);
   const circlePositionsRef = useRef<Position[]>([]);
   const pointsOnHeadRef = useRef<number>(0);
+  const pointsOnHandRef = useRef<number>(0);
 
-  const handlePress = (event: GestureResponderEvent) => {
-    if (count >= 51) {
+const handlePress = (event: GestureResponderEvent) => {
+  if (count >= 51) {
     console.log("Đã đạt giới hạn số lần chọn hợp lệ.");
     return;
-    }
-    const { locationX, locationY } = event.nativeEvent;
+  }
 
-    // Chuyển đổi tọa độ touch về tỷ lệ gốc của SVG
-    const normalizedX = locationX / scaleX;
-    const normalizedY = locationY / scaleY;
+  const { locationX, locationY } = event.nativeEvent;
 
-    // console.log(`Tọa độ chuẩn hóa: x = ${normalizedX}, y = ${normalizedY}`);
+  // Chuyển đổi tọa độ touch về tỷ lệ gốc của SVG
+  const normalizedX = locationX / scaleX;
+  const normalizedY = locationY / scaleY;
 
-      // Kiểm tra nếu điểm bấm thuộc vùng đầu
-    const isHeadRegion =
-      (normalizedX >= 103.43 && normalizedX <= 155 && normalizedY >= 23 && normalizedY <= 89.23) ||
-      (normalizedX >= 116 && normalizedX <= 147 && normalizedY >= 93.8 && normalizedY <= 104.7);
+  console.log(`Tọa độ chuẩn hóa: x = ${normalizedX}, y = ${normalizedY}`);
 
-    if (!isHeadRegion) {
-      console.log("Điểm bấm không nằm trong vùng đầu, bỏ qua.");
-      return;
-    }
-    // Cập nhật danh sách điểm trong ref
-    const newPosition = { x: normalizedX, y: normalizedY };
-    circlePositionsRef.current = [...circlePositionsRef.current, newPosition];
+  // Kiểm tra nếu điểm bấm thuộc vùng đầu
+  const isHeadRegion =
+    (normalizedX >= 106.43 && normalizedX <= 155 && normalizedY >= 23 && normalizedY <= 89.23) ||
+    (normalizedX >= 116 && normalizedX <= 147 && normalizedY >= 93.8 && normalizedY <= 104.7);
 
-    if (
-      newPosition.x >= 103.43 &&
-      newPosition.x <= 155 &&
-      newPosition.y >= 23 &&
-      newPosition.y <= 89.23 ||
-      newPosition.x >= 116 &&
-      newPosition.x <= 147 &&
-      newPosition.y >= 93.8 &&
-      newPosition.y <= 104.7 
-    ) {
-      pointsOnHeadRef.current += 1;
-      console.log('Điểm mới thuộc vùng đầu:', pointsOnHeadRef.current);
-    }
+  // Kiểm tra nếu điểm bấm thuộc vùng tay, bao gồm cả epsilon
+  const isHandRegion =
+    (normalizedX >= 71.64 && normalizedX <= 100.7 && normalizedY >= 115.21 && normalizedY <= 153.7) ||
+    (normalizedX >= 63.5 && normalizedX <= 82.39 && normalizedY >= 154.17 && normalizedY <= 192.3) ||
+    (normalizedX >= 58.6 && normalizedX <= 79.25 && normalizedY >= 197.3 && normalizedY <= 228.33) ||
+    (normalizedX >= 55.07 && normalizedX <= 64.03 && normalizedY >= 228.58 && normalizedY <= 236.7) ||
+    (normalizedX >= 54.6 && normalizedX <= 64.03 && normalizedY >= 229.58 && normalizedY <= 236.7) ||
+    (normalizedX >= 42.98 && normalizedX <= 63.37 && normalizedY >= 250.53 && normalizedY <= 282.79) ||
+    // (normalizedX >= 86.42 && normalizedX <= 113.29 && normalizedY >= 11.53 && normalizedY <= 120) ||
+    (normalizedX >= 61.79 && normalizedX <= 85.5 && normalizedY >= 185.17 && normalizedY <= 199) ||
+    (normalizedX >= 44.7 && normalizedX <= 67 && normalizedY >= 242 && normalizedY <= 247)
 
-    // Cập nhật state để hiển thị trên UI
-    setCirclePositions(circlePositionsRef.current);
-    setCount((prevCount) => prevCount + 1);
-  };
 
-  const resetSelection = () => {
-    circlePositionsRef.current = [];
-    pointsOnHeadRef.current = 0;
-    setCirclePositions([]);
-    setCount(0);
-  };
+  if (!isHeadRegion && !isHandRegion) {
+    console.log("Điểm bấm không nằm trong vùng hợp lệ, bỏ qua.");
+    return;
+  }
 
+  // Cập nhật danh sách điểm trong ref
+  const newPosition = { x: normalizedX, y: normalizedY };
+  circlePositionsRef.current = [...circlePositionsRef.current, newPosition];
+
+  if (isHeadRegion) {
+    pointsOnHeadRef.current += 1;
+    console.log('Điểm mới thuộc vùng đầu:', pointsOnHeadRef.current);
+  }
+
+  if (isHandRegion) {
+    pointsOnHandRef.current += 1;
+    console.log('Điểm mới thuộc vùng tay:', pointsOnHandRef.current);
+  }
+
+  // Cập nhật state để hiển thị trên UI
+  setCirclePositions(circlePositionsRef.current);
+  setCount((prevCount) => prevCount + 1);
+};
+
+const resetSelection = () => {
+  circlePositionsRef.current = [];
+  pointsOnHeadRef.current = 0;
+  pointsOnHandRef.current = 0;
+  setCirclePositions([]);
+  setCount(0);
+};
   return (
     <View style={styles.container}>
       <View
