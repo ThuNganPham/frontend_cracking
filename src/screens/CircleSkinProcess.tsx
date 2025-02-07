@@ -62,9 +62,15 @@ const handlePress = (event: GestureResponderEvent) => {
     (normalizedX >= 55.07 && normalizedX <= 64.03 && normalizedY >= 228.58 && normalizedY <= 236.7) ||
     (normalizedX >= 54.6 && normalizedX <= 64.03 && normalizedY >= 229.58 && normalizedY <= 236.7) ||
     (normalizedX >= 42.98 && normalizedX <= 63.37 && normalizedY >= 250.53 && normalizedY <= 282.79) ||
-    // (normalizedX >= 86.42 && normalizedX <= 113.29 && normalizedY >= 11.53 && normalizedY <= 120) ||
     (normalizedX >= 61.79 && normalizedX <= 85.5 && normalizedY >= 185.17 && normalizedY <= 199) ||
-    (normalizedX >= 44.7 && normalizedX <= 67 && normalizedY >= 242 && normalizedY <= 247)
+    (normalizedX >= 44.7 && normalizedX <= 67 && normalizedY >= 242 && normalizedY <= 247) ||
+    (normalizedX >= 156.7 && normalizedX <= 188.9 && normalizedY >= 116.4 && normalizedY <= 149.98) ||
+    (normalizedX >= 179.5 && normalizedX <= 200.6 && normalizedY >= 164.64 && normalizedY <= 191.04) ||
+    (normalizedX >= 180 && normalizedX <= 204.6 && normalizedY >= 203 && normalizedY <= 225.8) ||
+    (normalizedX >= 190.3 && normalizedX <= 209 && normalizedY >= 230 && normalizedY <= 240.48) ||
+    (normalizedX >= 197.3 && normalizedX <= 218.5 && normalizedY >= 251 && normalizedY <= 274) ||
+    (normalizedX >= 182.6 && normalizedX <= 198 && normalizedY >= 152.5 && normalizedY <= 164.2) 
+
 
 
   if (!isHeadRegion && !isHandRegion) {
