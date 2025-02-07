@@ -34,6 +34,7 @@ export default function CircleSkinProcess() {
   const circlePositionsRef = useRef<Position[]>([]);
   const pointsOnHeadRef = useRef<number>(0);
   const pointsOnHandRef = useRef<number>(0);
+  const pointsOnTrunkRef = useRef<number>(0);
 
 const handlePress = (event: GestureResponderEvent) => {
   if (count >= 51) {
@@ -71,9 +72,12 @@ const handlePress = (event: GestureResponderEvent) => {
     (normalizedX >= 197.3 && normalizedX <= 218.5 && normalizedY >= 251 && normalizedY <= 274) ||
     (normalizedX >= 182.6 && normalizedX <= 198 && normalizedY >= 152.5 && normalizedY <= 164.2) 
 
+  const isTrunk = 
+      (normalizedX >= 107 && normalizedX <= 159 && normalizedY >= 115 && normalizedY <= 144) ||
+      (normalizedX >= 89 && normalizedX <= 167 && normalizedY >= 154.59 && normalizedY <= 253) 
 
 
-  if (!isHeadRegion && !isHandRegion) {
+  if (!isHeadRegion && !isHandRegion && !isTrunk) {
     console.log("Điểm bấm không nằm trong vùng hợp lệ, bỏ qua.");
     return;
   }
@@ -92,6 +96,11 @@ const handlePress = (event: GestureResponderEvent) => {
     console.log('Điểm mới thuộc vùng tay:', pointsOnHandRef.current);
   }
 
+  if(isTrunk){
+    pointsOnTrunkRef.current += 1;
+    console.log('Điểm mới thuộc vùng thân:', pointsOnTrunkRef.current);
+
+  }
   // Cập nhật state để hiển thị trên UI
   setCirclePositions(circlePositionsRef.current);
   setCount((prevCount) => prevCount + 1);
@@ -101,6 +110,7 @@ const resetSelection = () => {
   circlePositionsRef.current = [];
   pointsOnHeadRef.current = 0;
   pointsOnHandRef.current = 0;
+  pointsOnTrunkRef.current = 0;
   setCirclePositions([]);
   setCount(0);
 };
