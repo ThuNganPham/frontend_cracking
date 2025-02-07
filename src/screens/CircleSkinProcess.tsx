@@ -35,7 +35,7 @@ export default function CircleSkinProcess() {
   const pointsOnHeadRef = useRef<number>(0);
   const pointsOnHandRef = useRef<number>(0);
   const pointsOnTrunkRef = useRef<number>(0);
-
+  const pointsOnLegRef = useRef<number>(0);
 const handlePress = (event: GestureResponderEvent) => {
   if (count >= 51) {
     console.log("Đã đạt giới hạn số lần chọn hợp lệ.");
@@ -76,8 +76,11 @@ const handlePress = (event: GestureResponderEvent) => {
       (normalizedX >= 107 && normalizedX <= 159 && normalizedY >= 115 && normalizedY <= 144) ||
       (normalizedX >= 89 && normalizedX <= 167 && normalizedY >= 154.59 && normalizedY <= 253) 
 
+  const isLeg = 
+      (normalizedX >= 94.03 && normalizedX <= 120.5 && normalizedY >= 253.88 && normalizedY <= 459) ||
+      (normalizedX >= 131.6 && normalizedX <= 158.5 && normalizedY >= 261 && normalizedY <= 459) 
 
-  if (!isHeadRegion && !isHandRegion && !isTrunk) {
+  if (!isHeadRegion && !isHandRegion && !isTrunk && !isLeg) {
     console.log("Điểm bấm không nằm trong vùng hợp lệ, bỏ qua.");
     return;
   }
@@ -101,6 +104,12 @@ const handlePress = (event: GestureResponderEvent) => {
     console.log('Điểm mới thuộc vùng thân:', pointsOnTrunkRef.current);
 
   }
+
+  if (isLeg){
+    pointsOnLegRef.current += 1;
+    console.log('Điểm mới thuộc vùng chân:', pointsOnLegRef.current);
+
+  }
   // Cập nhật state để hiển thị trên UI
   setCirclePositions(circlePositionsRef.current);
   setCount((prevCount) => prevCount + 1);
@@ -111,6 +120,7 @@ const resetSelection = () => {
   pointsOnHeadRef.current = 0;
   pointsOnHandRef.current = 0;
   pointsOnTrunkRef.current = 0;
+  pointsOnLegRef.current = 0;
   setCirclePositions([]);
   setCount(0);
 };
