@@ -11,6 +11,7 @@ import LinkText from '../components/LinkText';
 import Zoom from '../../assets/zoom.svg';
 import { NavigationProps } from '../navigation/navigation';
 import { CircleContext } from '../contexts/CircleContext';
+import { PointsOnBodyContext } from '../contexts/PointsOnBodyContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,7 +37,11 @@ export default function CircleSkinProcess() {
   const pointsOnHandRef = useRef<number>(0);
   const pointsOnTrunkRef = useRef<number>(0);
   const pointsOnLegRef = useRef<number>(0);
+  const { points, setPoints } = useContext(PointsOnBodyContext);
+
+
 const handlePress = (event: GestureResponderEvent) => {
+
   if (count >= 51) {
     console.log("Đã đạt giới hạn số lần chọn hợp lệ.");
     return;
@@ -85,31 +90,39 @@ const handlePress = (event: GestureResponderEvent) => {
     return;
   }
 
+  let updatedPoints = { ...points };
   // Cập nhật danh sách điểm trong ref
   const newPosition = { x: normalizedX, y: normalizedY };
   circlePositionsRef.current = [...circlePositionsRef.current, newPosition];
 
   if (isHeadRegion) {
+    updatedPoints.pointsOnHead += 1;
     pointsOnHeadRef.current += 1;
     console.log('Điểm mới thuộc vùng đầu:', pointsOnHeadRef.current);
   }
 
   if (isHandRegion) {
+    updatedPoints.pointsOnHand += 1;
     pointsOnHandRef.current += 1;
     console.log('Điểm mới thuộc vùng tay:', pointsOnHandRef.current);
   }
 
   if(isTrunk){
+    updatedPoints.pointsOnTrunk += 1;
     pointsOnTrunkRef.current += 1;
     console.log('Điểm mới thuộc vùng thân:', pointsOnTrunkRef.current);
 
   }
 
   if (isLeg){
+    updatedPoints.pointsOnLeg += 1;
     pointsOnLegRef.current += 1;
     console.log('Điểm mới thuộc vùng chân:', pointsOnLegRef.current);
 
   }
+  // Cập nhật state của Context
+  setPoints(updatedPoints);
+
   // Cập nhật state để hiển thị trên UI
   setCirclePositions(circlePositionsRef.current);
   setCount((prevCount) => prevCount + 1);
@@ -131,7 +144,6 @@ const resetSelection = () => {
         onStartShouldSetResponder={() => true}
         onResponderRelease={handlePress}
       >
-        <ColorOutline width={width * 0.65} height={height * 0.65} viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`} style={[styles.svg, styles.colorOutline]} />
         <TransParentOutline width={width * 0.65} height={height * 0.65} viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`} style={[styles.svg, styles.transParentOutline]} />
         {circlePositions.map((position, index) => (
           <Circle
@@ -178,10 +190,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-  },
-  colorOutline: {
-    zIndex: 2,
-    opacity: 0,
   },
   transParentOutline: {
     zIndex: 1,

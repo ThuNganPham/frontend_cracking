@@ -16,6 +16,9 @@ import CircleSkinProcess from '../MyApp/src/screens/CircleSkinProcess';
 import { CustomHeader } from './src/components/CustomHeader';
 import { CircleProvider } from '../MyApp/src/contexts/CircleContext'; 
 import RegisterOTPScreen from '../MyApp/src/screens/RegisterOTP'
+import { PointsProvider } from "../MyApp/src/contexts/PointsOnBodyContext"
+import { SeverityProvider } from "../MyApp/src/contexts/SeverityContext"
+
 const Stack = createStackNavigator();
 const { width } = Dimensions.get('window');
 const linking = {
@@ -66,6 +69,8 @@ const AppNavigator = () => {
 
 const App = () => {
   return (
+    <SeverityProvider>
+    <PointsProvider>
     <CircleProvider>
     <AuthProvider>
        <LoadingProvider> 
@@ -76,7 +81,8 @@ const App = () => {
       </LoadingProvider>
     </AuthProvider>
     </CircleProvider>
-
+    </PointsProvider>
+    </SeverityProvider>
   );
 };
 
