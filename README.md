@@ -188,7 +188,7 @@ Let’s understand these 2 more clearly below.
 
 ### Generate “Native code”
 
-Codegen is **responsible** to generate **Native Code** for **2 big components** of New Architecture. These are:
+Codegen is **responsible** to generate **Native Code** for **2 big components** of New Architecture. There are:
 
 1.  The **Turbo Module** component and
 
