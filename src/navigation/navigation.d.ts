@@ -10,7 +10,8 @@ export interface RootStackParamList {
   SucessTestScreen: {name : string};
   CheckSkinScreen : { name : string};
   CircleSkinProcess: { name : string };
-  RegisterOTPScreen: { name : string }
+  RegisterOTPScreen: { name : string };
+  CheckSkinRound: { name : string}
 }
 
 export type NavigationProps = StackNavigationProp<RootStackParamList>;

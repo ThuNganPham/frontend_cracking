@@ -18,7 +18,7 @@ import { CircleProvider } from '../MyApp/src/contexts/CircleContext';
 import RegisterOTPScreen from '../MyApp/src/screens/RegisterOTP'
 import { PointsProvider } from "../MyApp/src/contexts/PointsOnBodyContext"
 import { SeverityProvider } from "../MyApp/src/contexts/SeverityContext"
-
+import CheckSkinRound from "../MyApp/src/screens/CheckSkinRound2"
 const Stack = createStackNavigator();
 const { width } = Dimensions.get('window');
 const linking = {
@@ -57,6 +57,7 @@ const AppNavigator = () => {
           <Stack.Screen name="ForgetPasswordScreen" component={ForgetPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SucessTestScreen" component={SucessTestScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CheckSkinScreen" component={CheckSkinScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="CheckSkinRound" component={CheckSkinRound} options={{ headerShown: false }} />
           <Stack.Screen name="CircleSkinProcess" component={CircleSkinProcess} 
           options={{
               header: () => <CustomHeader />,

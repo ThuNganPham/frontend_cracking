@@ -168,7 +168,7 @@ const resetSelection = () => {
         <Text style={styles.footerText}>Phóng to để dễ dàng chọn </Text>
         <Zoom width={width * 0.055} height={height * 0.02} />
         <LinkText text=" Chọn lại. " style={styles.boldUnderlineText} onPress={resetSelection} />
-        <LinkText text="Hoàn tất" style={styles.boldUnderlineText} onPress={() => navigation.navigate('LogInAccount', { name: 'LogInAccount' })} />
+        <LinkText text="Hoàn tất" style={styles.boldUnderlineText} onPress={() => navigation.navigate('CheckSkinRound', { name: 'CheckSkinRound' })} />
       </HorizontalWhiteBar>
     </View>
   );

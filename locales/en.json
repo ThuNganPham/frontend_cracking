@@ -43,6 +43,7 @@
   "title-checkSkin": "Let Shiso know which areas of your skin are affected !",
   "RegisterAccountSucess":"successfully registered !",
   "LimitError" : "Selection limit reached",
-  "PointsSelected": "point(s) selected"
+  "PointsSelected": "point(s) selected",
+  "SeverityLevel": "Severity Level"
 
 }
